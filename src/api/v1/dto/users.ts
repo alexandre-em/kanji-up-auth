@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsEmail, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsString, IsUrl, MinLength } from 'class-validator';
 import { SubscriptionPlan } from 'src/domain/entities';
 
 export class FindUserResponseDto {
@@ -40,8 +40,6 @@ export class CreateUserDto {
   name: string;
 
   @IsString()
-  @MinLength(12)
-  @MaxLength(17)
   macAddress: string;
 }
 

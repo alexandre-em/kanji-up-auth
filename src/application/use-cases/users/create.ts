@@ -4,7 +4,7 @@ import { SubscriptionPlan, UnregisteredUsersFields } from 'src/domain/entities';
 
 type CreateUserInput = Omit<
   UnregisteredUsersFields,
-  'createdAt' | 'updatedAt' | 'isAnonymous' | 'adsDeactivated' | 'subscriptionPlan'
+  'createdAt' | 'updatedAt' | 'isAnonymous' | 'adsDeactivated' | 'subscriptionPlan' | 'credits'
 >;
 
 @Injectable()
@@ -17,6 +17,7 @@ export class CreateUserUseCase {
       isAnonymous: true,
       adsDeactivated: false,
       subscriptionPlan: SubscriptionPlan.FREE,
+      credits: 0,
     });
   }
 }

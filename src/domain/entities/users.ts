@@ -9,6 +9,7 @@ export type UnregisteredUsersFields = {
   isAnonymous: boolean;
   adsDeactivated: boolean;
   subscriptionPlan: SubscriptionPlan;
+  credits: number;
 
   createdAt: Date;
   updatedAt: Date;

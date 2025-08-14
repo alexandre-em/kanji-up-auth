@@ -38,6 +38,9 @@ export class User extends Document {
   @Prop({ type: Boolean, default: false })
   adsDeactivated: boolean;
 
+  @Prop({ type: Number, default: 0 })
+  credits: number;
+
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
 
