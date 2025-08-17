@@ -14,10 +14,10 @@ export class User extends Document {
   @Prop({ type: String, default: null, unique: true, sparse: true })
   email: string | null;
 
-  @Prop({ type: Date, default: Date.now })
+  @Prop({ type: Date, default: null })
   subscribedAt: Date;
 
-  @Prop({ type: Date, default: Date.now })
+  @Prop({ type: Date, default: null })
   subscribedUntil: Date;
 
   @Prop({ type: String, default: SubscriptionPlan.FREE })
