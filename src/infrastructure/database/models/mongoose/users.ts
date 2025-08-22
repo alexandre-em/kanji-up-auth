@@ -46,6 +46,9 @@ export class User extends Document {
 
   @Prop({ type: Date, default: Date.now })
   updatedAt: Date;
+
+  @Prop({ type: Date, default: null })
+  lastFreeCreditDate: Date | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

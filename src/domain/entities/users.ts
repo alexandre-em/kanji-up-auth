@@ -10,6 +10,7 @@ export type UnregisteredUsersFields = {
   adsDeactivated: boolean;
   subscriptionPlan: SubscriptionPlan;
   credits: number;
+  lastFreeCreditDate: Date | null;
 
   createdAt: Date;
   updatedAt: Date;
