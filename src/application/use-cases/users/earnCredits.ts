@@ -9,9 +9,11 @@ export const REWARDED_AD_CREDIT_AMOUNT = 10;
 export class EarnCreditsUseCase {
   constructor(private userRepository: UsersRepository) {}
 
-  async execute(macAddress: string): Promise<void> {
+  async execute(macAddress: string): Promise<{ creditsEarned: number }> {
     const id = await this.userRepository.findIdByKey('macAddress', macAddress);
 
     await this.userRepository.incrementCredits(id, REWARDED_AD_CREDIT_AMOUNT);
+
+    return { creditsEarned: REWARDED_AD_CREDIT_AMOUNT };
   }
 }
