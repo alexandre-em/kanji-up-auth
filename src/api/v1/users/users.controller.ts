@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post, UseInterceptors } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/application/use-cases/users/create';
+import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits';
 import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
 import { LinkUserToProviderUseCase } from 'src/application/use-cases/users/linkToProvider';
 
@@ -12,6 +13,7 @@ export class UsersController {
     private findByMacAddressUseCase: FindByMacAddressUseCase,
     private createUserUseCase: CreateUserUseCase,
     private linkUserToProviderUseCase: LinkUserToProviderUseCase,
+    private earnCreditsUseCase: EarnCreditsUseCase,
   ) {}
 
   @UseInterceptors(new ResponseTransformInterceptor(FindUserResponseDto))
@@ -28,5 +30,10 @@ export class UsersController {
   @Patch('/link/:macAddress')
   linkToProvider(@Body() body: LinkUserDto, @Param('macAddress') macAddress: string) {
     return this.linkUserToProviderUseCase.execute(macAddress, body);
+  }
+
+  @Patch('/:macAddress/credits/earn')
+  earnCredits(@Param('macAddress') macAddress: string) {
+    return this.earnCreditsUseCase.execute(macAddress);
   }
 }

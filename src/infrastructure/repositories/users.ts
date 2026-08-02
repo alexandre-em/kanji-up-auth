@@ -33,4 +33,8 @@ export class MongooseUserRepository implements UsersRepository {
   async update(id, payload) {
     await this.userModel.updateOne({ _id: id }, payload);
   }
+
+  async incrementCredits(id: string, amount: number) {
+    await this.userModel.updateOne({ _id: id }, { $inc: { credits: amount } });
+  }
 }

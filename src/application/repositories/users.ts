@@ -5,4 +5,5 @@ export abstract class UsersRepository {
   abstract findByMacAddress(email: string): Promise<Users>;
   abstract save(user: Omit<UnregisteredUsersFields, 'createdAt' | 'updatedAt'>): Promise<void>;
   abstract update(id: string, content: Partial<Users>): Promise<void>;
+  abstract incrementCredits(id: string, amount: number): Promise<void>;
 }
