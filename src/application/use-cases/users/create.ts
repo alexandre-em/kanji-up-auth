@@ -4,7 +4,15 @@ import { SubscriptionPlan, UnregisteredUsersFields } from 'src/domain/entities';
 
 type CreateUserInput = Omit<
   UnregisteredUsersFields,
-  'createdAt' | 'updatedAt' | 'isAnonymous' | 'adsDeactivated' | 'subscriptionPlan' | 'credits' | 'lastFreeCreditDate'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'isAnonymous'
+  | 'adsDeactivated'
+  | 'subscriptionPlan'
+  | 'credits'
+  | 'lastFreeCreditDate'
+  | 'unlockedDifficulties'
+  | 'unlockedKanji'
 >;
 
 @Injectable()
@@ -19,6 +27,8 @@ export class CreateUserUseCase {
       subscriptionPlan: SubscriptionPlan.FREE,
       credits: 0,
       lastFreeCreditDate: null,
+      unlockedDifficulties: [],
+      unlockedKanji: [],
     });
   }
 }

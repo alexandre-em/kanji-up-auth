@@ -37,4 +37,13 @@ export class MongooseUserRepository implements UsersRepository {
   async incrementCredits(id: string, amount: number) {
     await this.userModel.updateOne({ _id: id }, { $inc: { credits: amount } });
   }
+
+  async unlockContent(id: string, field: 'unlockedDifficulties' | 'unlockedKanji', key: string, cost: number): Promise<boolean> {
+    const result = await this.userModel.updateOne(
+      { _id: id, credits: { $gte: cost }, [field]: { $ne: key } },
+      { $inc: { credits: -cost }, $push: { [field]: key } },
+    );
+
+    return result.modifiedCount > 0;
+  }
 }

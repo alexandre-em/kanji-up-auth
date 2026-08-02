@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsEmail, IsString, IsUrl, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
 import { SubscriptionPlan } from 'src/domain/entities';
 
 export class FindUserResponseDto {
@@ -32,6 +32,15 @@ export class FindUserResponseDto {
 
   @Expose()
   subscribedUntil: Date | null;
+
+  @Expose()
+  credits: number;
+
+  @Expose()
+  unlockedDifficulties: string[];
+
+  @Expose()
+  unlockedKanji: string[];
 }
 
 export class CreateUserDto {
@@ -52,4 +61,16 @@ export class LinkUserDto {
 
   @IsString()
   providerId: string;
+}
+
+export class UnlockContentDto {
+  @IsIn(['kanji', 'tier'])
+  scope: 'kanji' | 'tier';
+
+  @IsString()
+  tier: string;
+
+  @IsOptional()
+  @IsString()
+  kanjiId?: string;
 }

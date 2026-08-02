@@ -49,6 +49,14 @@ export class User extends Document {
 
   @Prop({ type: Date, default: null })
   lastFreeCreditDate: Date | null;
+
+  // Bulk unlocks: keys like "jlpt:3", "grade:8" — one whole difficulty tier bought at once
+  @Prop({ type: [String], default: [] })
+  unlockedDifficulties: string[];
+
+  // Individual kanji unlocked one at a time, cheaper per-item than buying the whole tier
+  @Prop({ type: [String], default: [] })
+  unlockedKanji: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

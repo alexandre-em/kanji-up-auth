@@ -11,6 +11,8 @@ export type UnregisteredUsersFields = {
   subscriptionPlan: SubscriptionPlan;
   credits: number;
   lastFreeCreditDate: Date | null;
+  unlockedDifficulties: string[];
+  unlockedKanji: string[];
 
   createdAt: Date;
   updatedAt: Date;

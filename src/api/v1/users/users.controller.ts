@@ -3,8 +3,9 @@ import { CreateUserUseCase } from 'src/application/use-cases/users/create';
 import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits';
 import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
 import { LinkUserToProviderUseCase } from 'src/application/use-cases/users/linkToProvider';
+import { UnlockContentUseCase } from 'src/application/use-cases/users/unlockContent';
 
-import { CreateUserDto, FindUserResponseDto, LinkUserDto } from '../dto/users';
+import { CreateUserDto, FindUserResponseDto, LinkUserDto, UnlockContentDto } from '../dto/users';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';
 
 @Controller('users')
@@ -14,6 +15,7 @@ export class UsersController {
     private createUserUseCase: CreateUserUseCase,
     private linkUserToProviderUseCase: LinkUserToProviderUseCase,
     private earnCreditsUseCase: EarnCreditsUseCase,
+    private unlockContentUseCase: UnlockContentUseCase,
   ) {}
 
   @UseInterceptors(new ResponseTransformInterceptor(FindUserResponseDto))
@@ -35,5 +37,10 @@ export class UsersController {
   @Patch('/:macAddress/credits/earn')
   earnCredits(@Param('macAddress') macAddress: string) {
     return this.earnCreditsUseCase.execute(macAddress);
+  }
+
+  @Patch('/:macAddress/unlock')
+  unlockContent(@Param('macAddress') macAddress: string, @Body() body: UnlockContentDto) {
+    return this.unlockContentUseCase.execute(macAddress, body);
   }
 }
