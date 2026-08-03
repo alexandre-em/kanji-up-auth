@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsArray, IsIn, IsNumber, IsObject, IsString, Min } from 'class-validator';
+import { IsArray, IsIn, IsNotEmpty, IsNumber, IsObject, IsString, Min } from 'class-validator';
 import { SessionStatus, SessionType } from 'src/domain/entities';
 
 export class SessionResponseDto {
@@ -33,6 +33,7 @@ export class SessionResponseDto {
 
 export class CreateSessionDto {
   @IsString()
+  @IsNotEmpty()
   macAddress: string;
 
   @IsIn(Object.values(SessionType))
