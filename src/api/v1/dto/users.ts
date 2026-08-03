@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsEmail, IsIn, IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsNumber, IsObject, IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
 import { SubscriptionPlan } from 'src/domain/entities';
 
 export class FindUserResponseDto {
@@ -41,6 +41,13 @@ export class FindUserResponseDto {
 
   @Expose()
   unlockedKanji: string[];
+
+  @Expose()
+  kanjiProgression: {
+    totalScore: number;
+    dailyScores: Record<string, number>;
+    progression: Record<string, number>;
+  };
 }
 
 export class CreateUserDto {
@@ -73,4 +80,15 @@ export class UnlockContentDto {
   @IsOptional()
   @IsString()
   kanjiId?: string;
+}
+
+export class UpdateKanjiProgressionDto {
+  @IsNumber()
+  totalScore: number;
+
+  @IsObject()
+  dailyScores: Record<string, number>;
+
+  @IsObject()
+  progression: Record<string, number>;
 }

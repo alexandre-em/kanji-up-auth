@@ -57,6 +57,14 @@ export class User extends Document {
   // Individual kanji unlocked one at a time, cheaper per-item than buying the whole tier
   @Prop({ type: [String], default: [] })
   unlockedKanji: string[];
+
+  // Shape validated at the DTO boundary, not here — client sends a full replacement per finished
+  // training session
+  @Prop({
+    type: { totalScore: Number, dailyScores: Object, progression: Object },
+    default: () => ({ totalScore: 0, dailyScores: {}, progression: {} }),
+  })
+  kanjiProgression: { totalScore: number; dailyScores: Record<string, number>; progression: Record<string, number> };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

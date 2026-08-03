@@ -13,6 +13,7 @@ type CreateUserInput = Omit<
   | 'lastFreeCreditDate'
   | 'unlockedDifficulties'
   | 'unlockedKanji'
+  | 'kanjiProgression'
 >;
 
 @Injectable()
@@ -29,6 +30,7 @@ export class CreateUserUseCase {
       lastFreeCreditDate: null,
       unlockedDifficulties: [],
       unlockedKanji: [],
+      kanjiProgression: { totalScore: 0, dailyScores: {}, progression: {} },
     });
   }
 }

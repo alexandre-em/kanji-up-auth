@@ -4,8 +4,9 @@ import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits'
 import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
 import { LinkUserToProviderUseCase } from 'src/application/use-cases/users/linkToProvider';
 import { UnlockContentUseCase } from 'src/application/use-cases/users/unlockContent';
+import { UpdateKanjiProgressionUseCase } from 'src/application/use-cases/users/updateKanjiProgression';
 
-import { CreateUserDto, FindUserResponseDto, LinkUserDto, UnlockContentDto } from '../dto/users';
+import { CreateUserDto, FindUserResponseDto, LinkUserDto, UnlockContentDto, UpdateKanjiProgressionDto } from '../dto/users';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';
 
 @Controller('users')
@@ -16,6 +17,7 @@ export class UsersController {
     private linkUserToProviderUseCase: LinkUserToProviderUseCase,
     private earnCreditsUseCase: EarnCreditsUseCase,
     private unlockContentUseCase: UnlockContentUseCase,
+    private updateKanjiProgressionUseCase: UpdateKanjiProgressionUseCase,
   ) {}
 
   @UseInterceptors(new ResponseTransformInterceptor(FindUserResponseDto))
@@ -42,5 +44,10 @@ export class UsersController {
   @Patch('/:macAddress/unlock')
   unlockContent(@Param('macAddress') macAddress: string, @Body() body: UnlockContentDto) {
     return this.unlockContentUseCase.execute(macAddress, body);
+  }
+
+  @Patch('/:macAddress/kanji-progression')
+  updateKanjiProgression(@Param('macAddress') macAddress: string, @Body() body: UpdateKanjiProgressionDto) {
+    return this.updateKanjiProgressionUseCase.execute(macAddress, body);
   }
 }

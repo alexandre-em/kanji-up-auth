@@ -4,6 +4,7 @@ import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits'
 import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
 import { LinkUserToProviderUseCase } from 'src/application/use-cases/users/linkToProvider';
 import { UnlockContentUseCase } from 'src/application/use-cases/users/unlockContent';
+import { UpdateKanjiProgressionUseCase } from 'src/application/use-cases/users/updateKanjiProgression';
 import { UsersRepositoryModule } from 'src/infrastructure/repositories/users.module';
 
 import { UsersController } from './users.controller';
@@ -11,7 +12,14 @@ import { UsersController } from './users.controller';
 @Module({
   imports: [UsersRepositoryModule],
   controllers: [UsersController],
-  providers: [FindByMacAddressUseCase, CreateUserUseCase, LinkUserToProviderUseCase, EarnCreditsUseCase, UnlockContentUseCase],
+  providers: [
+    FindByMacAddressUseCase,
+    CreateUserUseCase,
+    LinkUserToProviderUseCase,
+    EarnCreditsUseCase,
+    UnlockContentUseCase,
+    UpdateKanjiProgressionUseCase,
+  ],
   exports: [],
 })
 export class UsersModule {}
