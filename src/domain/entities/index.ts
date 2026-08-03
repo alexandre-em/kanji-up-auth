@@ -25,4 +25,5 @@ export abstract class Entity<T> {
   }
 }
 
+export * from './sessions';
 export * from './users';
