@@ -31,13 +31,13 @@ export type UnlockContentInput = {
 export class UnlockContentUseCase {
   constructor(private userRepository: UsersRepository) {}
 
-  async execute(macAddress: string, input: UnlockContentInput): Promise<{ creditsSpent: number }> {
+  async execute(userId: string, input: UnlockContentInput): Promise<{ creditsSpent: number }> {
     const costTable = input.scope === 'kanji' ? PER_KANJI_COST : BULK_TIER_COST;
     const cost = costTable[input.tier];
     if (cost === undefined) throw new BadRequestException(`Unknown tier "${input.tier}"`);
     if (input.scope === 'kanji' && !input.kanjiId) throw new BadRequestException('kanjiId is required to unlock a single kanji');
 
-    const id = await this.userRepository.findIdByKey('macAddress', macAddress);
+    const id = await this.userRepository.findIdByKey('userId', userId);
     const field = input.scope === 'kanji' ? 'unlockedKanji' : 'unlockedDifficulties';
     const key = input.scope === 'kanji' ? input.kanjiId! : input.tier;
 

@@ -13,6 +13,9 @@ export type KanjiProgression = {
 };
 
 export type UnregisteredUsersFields = {
+  // Stable identity, independent of the device — every route past the initial bootstrap
+  // (GET /users/mac-address/:macAddress) uses this, never macAddress directly
+  userId: string;
   name: string;
   macAddress: string;
   isAnonymous: boolean;

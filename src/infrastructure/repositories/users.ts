@@ -18,6 +18,14 @@ export class MongooseUserRepository implements UsersRepository {
     return result._id as string;
   }
 
+  async findByUserId(userId: string): Promise<Users> {
+    const result = await this.userModel.findOne({ userId }).select('-_id -__v').exec();
+
+    if (!result) throw new Error('User not found');
+
+    return result;
+  }
+
   async findByMacAddress(macAddress: string): Promise<Users> {
     const result = await this.userModel.findOne({ macAddress }).select('-_id -__v').exec();
 
@@ -38,10 +46,6 @@ export class MongooseUserRepository implements UsersRepository {
 
   async update(id, payload) {
     await this.userModel.updateOne({ _id: id }, payload);
-  }
-
-  async deleteByMacAddress(macAddress: string): Promise<void> {
-    await this.userModel.deleteOne({ macAddress });
   }
 
   async incrementCredits(id: string, amount: number) {

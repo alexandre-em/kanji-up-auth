@@ -4,6 +4,7 @@ import { SubscriptionPlan, UnregisteredUsersFields } from 'src/domain/entities';
 
 type CreateUserInput = Omit<
   UnregisteredUsersFields,
+  | 'userId'
   | 'createdAt'
   | 'updatedAt'
   | 'isAnonymous'

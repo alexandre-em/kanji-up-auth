@@ -4,6 +4,9 @@ import { SubscriptionPlan } from 'src/domain/entities';
 
 export class FindUserResponseDto {
   @Expose()
+  userId: string;
+
+  @Expose()
   email: string;
 
   @Expose()
@@ -66,6 +69,9 @@ export class RecoverAccountDto {
 }
 
 export class RecoverAccountResponseDto {
+  @Expose()
+  userId: string;
+
   @Expose()
   migrated: boolean;
 }

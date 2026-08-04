@@ -6,8 +6,8 @@ import { KanjiProgression } from 'src/domain/entities';
 export class UpdateKanjiProgressionUseCase {
   constructor(private userRepository: UsersRepository) {}
 
-  async execute(macAddress: string, kanjiProgression: KanjiProgression): Promise<void> {
-    const id = await this.userRepository.findIdByKey('macAddress', macAddress);
+  async execute(userId: string, kanjiProgression: KanjiProgression): Promise<void> {
+    const id = await this.userRepository.findIdByKey('userId', userId);
 
     await this.userRepository.update(id, { kanjiProgression });
   }

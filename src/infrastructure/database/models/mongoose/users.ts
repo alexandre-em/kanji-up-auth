@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -8,6 +10,9 @@ export enum SubscriptionPlan {
 
 @Schema({ timestamps: { createdAt: true, updatedAt: false } })
 export class User extends Document {
+  @Prop({ type: String, required: true, unique: true, default: randomUUID })
+  userId: string;
+
   @Prop({ type: String, default: null, unique: true, sparse: true })
   providerId: string | null;
 
@@ -69,6 +74,7 @@ export class User extends Document {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
+UserSchema.index({ userId: 1 });
 UserSchema.index({ macAddress: 1 });
 UserSchema.index({ providerId: 1 });
 UserSchema.index({ email: 1 });

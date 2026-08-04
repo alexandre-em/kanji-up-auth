@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post, UseInterceptors } from '@nes
 import { CreateUserUseCase } from 'src/application/use-cases/users/create';
 import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits';
 import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
+import { FindByUserIdUseCase } from 'src/application/use-cases/users/findByUserId';
 import { RecoverAccountUseCase } from 'src/application/use-cases/users/recoverAccount';
 import { UnlockContentUseCase } from 'src/application/use-cases/users/unlockContent';
 import { UpdateKanjiProgressionUseCase } from 'src/application/use-cases/users/updateKanjiProgression';
@@ -20,6 +21,7 @@ import { ResponseTransformInterceptor } from '../middlewares/responseValidationI
 export class UsersController {
   constructor(
     private findByMacAddressUseCase: FindByMacAddressUseCase,
+    private findByUserIdUseCase: FindByUserIdUseCase,
     private createUserUseCase: CreateUserUseCase,
     private recoverAccountUseCase: RecoverAccountUseCase,
     private earnCreditsUseCase: EarnCreditsUseCase,
@@ -27,10 +29,18 @@ export class UsersController {
     private updateKanjiProgressionUseCase: UpdateKanjiProgressionUseCase,
   ) {}
 
+  // Bootstrap only: the one route a client without a stored userId yet can call, on first launch
+  // or after reinstalling. Every other route below takes userId.
   @UseInterceptors(new ResponseTransformInterceptor(FindUserResponseDto))
   @Get('/mac-address/:macAddress')
   findByMacAddress(@Param('macAddress') macAddress: string): Promise<FindUserResponseDto> {
     return this.findByMacAddressUseCase.execute(macAddress);
+  }
+
+  @UseInterceptors(new ResponseTransformInterceptor(FindUserResponseDto))
+  @Get('/:userId')
+  findByUserId(@Param('userId') userId: string): Promise<FindUserResponseDto> {
+    return this.findByUserIdUseCase.execute(userId);
   }
 
   @Post('')
@@ -39,23 +49,23 @@ export class UsersController {
   }
 
   @UseInterceptors(new ResponseTransformInterceptor(RecoverAccountResponseDto))
-  @Patch('/:macAddress/recover')
-  recoverAccount(@Param('macAddress') macAddress: string, @Body() body: RecoverAccountDto) {
-    return this.recoverAccountUseCase.execute({ macAddress, idToken: body.idToken });
+  @Patch('/:userId/recover')
+  recoverAccount(@Param('userId') userId: string, @Body() body: RecoverAccountDto) {
+    return this.recoverAccountUseCase.execute({ userId, idToken: body.idToken });
   }
 
-  @Patch('/:macAddress/credits/earn')
-  earnCredits(@Param('macAddress') macAddress: string) {
-    return this.earnCreditsUseCase.execute(macAddress);
+  @Patch('/:userId/credits/earn')
+  earnCredits(@Param('userId') userId: string) {
+    return this.earnCreditsUseCase.execute(userId);
   }
 
-  @Patch('/:macAddress/unlock')
-  unlockContent(@Param('macAddress') macAddress: string, @Body() body: UnlockContentDto) {
-    return this.unlockContentUseCase.execute(macAddress, body);
+  @Patch('/:userId/unlock')
+  unlockContent(@Param('userId') userId: string, @Body() body: UnlockContentDto) {
+    return this.unlockContentUseCase.execute(userId, body);
   }
 
-  @Patch('/:macAddress/kanji-progression')
-  updateKanjiProgression(@Param('macAddress') macAddress: string, @Body() body: UpdateKanjiProgressionDto) {
-    return this.updateKanjiProgressionUseCase.execute(macAddress, body);
+  @Patch('/:userId/kanji-progression')
+  updateKanjiProgression(@Param('userId') userId: string, @Body() body: UpdateKanjiProgressionDto) {
+    return this.updateKanjiProgressionUseCase.execute(userId, body);
   }
 }
