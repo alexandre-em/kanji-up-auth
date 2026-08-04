@@ -26,12 +26,22 @@ export class MongooseUserRepository implements UsersRepository {
     return result;
   }
 
+  async findByProviderId(providerId: string): Promise<Users | null> {
+    const result = await this.userModel.findOne({ providerId }).select('-_id -__v').exec();
+
+    return result ? result.toObject() : null;
+  }
+
   async save(payload) {
     await this.userModel.create(payload);
   }
 
   async update(id, payload) {
     await this.userModel.updateOne({ _id: id }, payload);
+  }
+
+  async deleteByMacAddress(macAddress: string): Promise<void> {
+    await this.userModel.deleteOne({ macAddress });
   }
 
   async incrementCredits(id: string, amount: number) {

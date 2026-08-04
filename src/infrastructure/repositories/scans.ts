@@ -30,4 +30,12 @@ export class MongooseScansRepository implements ScansRepository {
 
     return { docs: docs.map((doc) => doc.toObject()), totalDocs };
   }
+
+  async migrateMacAddress(fromMacAddress: string, toMacAddress: string): Promise<void> {
+    await this.scanModel.updateMany({ macAddress: fromMacAddress }, { $set: { macAddress: toMacAddress } });
+  }
+
+  async deleteByMacAddress(macAddress: string): Promise<void> {
+    await this.scanModel.deleteMany({ macAddress });
+  }
 }

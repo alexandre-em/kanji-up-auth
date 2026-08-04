@@ -7,4 +7,8 @@ export abstract class SessionsRepository {
   abstract findActive(macAddress: string, type: SessionType): Promise<Sessions | null>;
   abstract updateQuestion(sessionId: string, atIndex: number, question: Question, nextIndex: number): Promise<void>;
   abstract setStatus(sessionId: string, status: SessionStatus, score: number | null): Promise<void>;
+  // Account recovery: re-points every session owned by the old device's macAddress to the new one.
+  // Call deleteByMacAddress(toMacAddress) first so the recovered history is what's authoritative
+  abstract migrateMacAddress(fromMacAddress: string, toMacAddress: string): Promise<void>;
+  abstract deleteByMacAddress(macAddress: string): Promise<void>;
 }

@@ -39,4 +39,12 @@ export class MongooseDailyMissionsRepository implements DailyMissionsRepository 
 
     return result ? result.toObject() : null;
   }
+
+  async migrateMacAddress(fromMacAddress: string, toMacAddress: string): Promise<void> {
+    await this.missionModel.updateMany({ macAddress: fromMacAddress }, { $set: { macAddress: toMacAddress } });
+  }
+
+  async deleteByMacAddress(macAddress: string): Promise<void> {
+    await this.missionModel.deleteMany({ macAddress });
+  }
 }

@@ -41,4 +41,12 @@ export class MongooseSessionsRepository implements SessionsRepository {
   async setStatus(sessionId: string, status: SessionStatus, score: number | null): Promise<void> {
     await this.sessionModel.updateOne({ sessionId }, { $set: { status, score } });
   }
+
+  async migrateMacAddress(fromMacAddress: string, toMacAddress: string): Promise<void> {
+    await this.sessionModel.updateMany({ macAddress: fromMacAddress }, { $set: { macAddress: toMacAddress } });
+  }
+
+  async deleteByMacAddress(macAddress: string): Promise<void> {
+    await this.sessionModel.deleteMany({ macAddress });
+  }
 }
