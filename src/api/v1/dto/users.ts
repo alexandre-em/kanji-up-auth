@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsEmail, IsIn, IsNumber, IsObject, IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
+import { IsIn, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, MinLength } from 'class-validator';
 import { SubscriptionPlan } from 'src/domain/entities';
 
 export class FindUserResponseDto {
@@ -59,15 +59,15 @@ export class CreateUserDto {
   macAddress: string;
 }
 
-export class LinkUserDto {
-  @IsEmail()
-  email: string;
-
-  @IsUrl()
-  picture: string;
-
+export class RecoverAccountDto {
   @IsString()
-  providerId: string;
+  @IsNotEmpty()
+  idToken: string;
+}
+
+export class RecoverAccountResponseDto {
+  @Expose()
+  migrated: boolean;
 }
 
 export class UnlockContentDto {

@@ -2,11 +2,18 @@ import { Body, Controller, Get, Param, Patch, Post, UseInterceptors } from '@nes
 import { CreateUserUseCase } from 'src/application/use-cases/users/create';
 import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits';
 import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
-import { LinkUserToProviderUseCase } from 'src/application/use-cases/users/linkToProvider';
+import { RecoverAccountUseCase } from 'src/application/use-cases/users/recoverAccount';
 import { UnlockContentUseCase } from 'src/application/use-cases/users/unlockContent';
 import { UpdateKanjiProgressionUseCase } from 'src/application/use-cases/users/updateKanjiProgression';
 
-import { CreateUserDto, FindUserResponseDto, LinkUserDto, UnlockContentDto, UpdateKanjiProgressionDto } from '../dto/users';
+import {
+  CreateUserDto,
+  FindUserResponseDto,
+  RecoverAccountDto,
+  RecoverAccountResponseDto,
+  UnlockContentDto,
+  UpdateKanjiProgressionDto,
+} from '../dto/users';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';
 
 @Controller('users')
@@ -14,7 +21,7 @@ export class UsersController {
   constructor(
     private findByMacAddressUseCase: FindByMacAddressUseCase,
     private createUserUseCase: CreateUserUseCase,
-    private linkUserToProviderUseCase: LinkUserToProviderUseCase,
+    private recoverAccountUseCase: RecoverAccountUseCase,
     private earnCreditsUseCase: EarnCreditsUseCase,
     private unlockContentUseCase: UnlockContentUseCase,
     private updateKanjiProgressionUseCase: UpdateKanjiProgressionUseCase,
@@ -31,9 +38,10 @@ export class UsersController {
     return this.createUserUseCase.execute(body);
   }
 
-  @Patch('/link/:macAddress')
-  linkToProvider(@Body() body: LinkUserDto, @Param('macAddress') macAddress: string) {
-    return this.linkUserToProviderUseCase.execute(macAddress, body);
+  @UseInterceptors(new ResponseTransformInterceptor(RecoverAccountResponseDto))
+  @Patch('/:macAddress/recover')
+  recoverAccount(@Param('macAddress') macAddress: string, @Body() body: RecoverAccountDto) {
+    return this.recoverAccountUseCase.execute({ macAddress, idToken: body.idToken });
   }
 
   @Patch('/:macAddress/credits/earn')
