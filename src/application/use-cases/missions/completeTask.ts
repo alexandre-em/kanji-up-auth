@@ -12,6 +12,7 @@ export const MISSION_REWARD_CREDITS = 10;
 export type CompleteMissionTaskResult = {
   mission: DailyMission;
   rewardGranted: boolean;
+  creditsGranted: number;
 };
 
 @Injectable()
@@ -27,19 +28,19 @@ export class CompleteMissionTaskUseCase {
     if (!mission) mission = await this.missionsRepository.create(macAddress, date);
 
     // Idempotent: a task already marked done today doesn't re-trigger anything
-    if (mission.tasks[task]) return { mission, rewardGranted: false };
+    if (mission.tasks[task]) return { mission, rewardGranted: false, creditsGranted: 0 };
 
     mission = await this.missionsRepository.completeTask(macAddress, date, task);
 
     const allDone = Object.values(mission.tasks).every(Boolean);
-    if (!allDone || mission.rewardClaimed) return { mission, rewardGranted: false };
+    if (!allDone || mission.rewardClaimed) return { mission, rewardGranted: false, creditsGranted: 0 };
 
     const claimed = await this.missionsRepository.claimReward(macAddress, date);
-    if (!claimed) return { mission, rewardGranted: false };
+    if (!claimed) return { mission, rewardGranted: false, creditsGranted: 0 };
 
     const id = await this.usersRepository.findIdByKey('macAddress', macAddress);
     await this.usersRepository.incrementCredits(id, MISSION_REWARD_CREDITS);
 
-    return { mission: claimed, rewardGranted: true };
+    return { mission: claimed, rewardGranted: true, creditsGranted: MISSION_REWARD_CREDITS };
   }
 }

@@ -31,4 +31,7 @@ export class CompleteMissionResponseDto {
 
   @Expose()
   rewardGranted: boolean;
+
+  @Expose()
+  creditsGranted: number;
 }
