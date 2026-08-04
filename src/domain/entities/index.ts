@@ -26,5 +26,6 @@ export abstract class Entity<T> {
 }
 
 export * from './missions';
+export * from './scans';
 export * from './sessions';
 export * from './users';
