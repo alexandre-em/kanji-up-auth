@@ -7,7 +7,7 @@ export type DailyMissionTasks = {
 export type MissionTaskKey = keyof DailyMissionTasks;
 
 export type DailyMission = {
-  macAddress: string;
+  userId: string;
   // Calendar day in UTC (YYYY-MM-DD), computed server-side — never trusts a client-supplied date
   date: string;
   tasks: DailyMissionTasks;

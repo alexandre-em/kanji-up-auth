@@ -31,7 +31,7 @@ export class ScansController {
     if (!image) throw new BadRequestException('An image file is required');
 
     return this.createScanUseCase.execute({
-      macAddress: body.macAddress,
+      userId: body.userId,
       imageBuffer: image.buffer,
       contentType: image.mimetype,
     });
@@ -40,10 +40,10 @@ export class ScansController {
   @UseInterceptors(new ResponseTransformInterceptor(ListScansResponseDto))
   @Get('')
   list(
-    @Query('macAddress') macAddress: string,
+    @Query('userId') userId: string,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
   ) {
-    return this.listScansUseCase.execute(macAddress, page, limit);
+    return this.listScansUseCase.execute(userId, page, limit);
   }
 }

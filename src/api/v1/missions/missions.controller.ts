@@ -14,13 +14,13 @@ export class MissionsController {
 
   @UseInterceptors(new ResponseTransformInterceptor(DailyMissionResponseDto))
   @Get('today')
-  getToday(@Query('macAddress') macAddress: string) {
-    return this.getTodayMissionsUseCase.execute(macAddress);
+  getToday(@Query('userId') userId: string) {
+    return this.getTodayMissionsUseCase.execute(userId);
   }
 
   @UseInterceptors(new ResponseTransformInterceptor(CompleteMissionResponseDto))
   @Patch('complete')
   complete(@Body() body: CompleteMissionTaskDto) {
-    return this.completeMissionTaskUseCase.execute(body.macAddress, body.task);
+    return this.completeMissionTaskUseCase.execute(body.userId, body.task);
   }
 }

@@ -4,7 +4,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateScanDto {
   @IsString()
   @IsNotEmpty()
-  macAddress: string;
+  userId: string;
 }
 
 export class ScanTokenDto {

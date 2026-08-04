@@ -38,7 +38,7 @@ export type Question = KanjiQuestion | WordQuestion | Record<string, unknown>;
 
 export type Sessions = {
   sessionId: string;
-  macAddress: string;
+  userId: string;
   type: SessionType;
   status: SessionStatus;
   questions: Question[];

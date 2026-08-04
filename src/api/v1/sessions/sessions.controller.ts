@@ -28,8 +28,8 @@ export class SessionsController {
   // Resume-or-start-fresh check on entering a training mode — null means nothing to resume
   @UseInterceptors(new ResponseTransformInterceptor(SessionResponseDto))
   @Get('/active')
-  findActive(@Query('macAddress') macAddress: string, @Query('type') type: SessionType) {
-    return this.findActiveSessionUseCase.execute(macAddress, type);
+  findActive(@Query('userId') userId: string, @Query('type') type: SessionType) {
+    return this.findActiveSessionUseCase.execute(userId, type);
   }
 
   @Patch('/:sessionId/question')

@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 @Schema({ timestamps: { createdAt: true, updatedAt: true } })
 export class DailyMission extends Document {
   @Prop({ type: String, required: true })
-  macAddress: string;
+  userId: string;
 
   @Prop({ type: String, required: true })
   date: string;
@@ -24,4 +24,4 @@ export class DailyMission extends Document {
 
 export const DailyMissionSchema = SchemaFactory.createForClass(DailyMission);
 
-DailyMissionSchema.index({ macAddress: 1, date: 1 }, { unique: true });
+DailyMissionSchema.index({ userId: 1, date: 1 }, { unique: true });

@@ -6,7 +6,7 @@ import { Sessions, SessionType } from 'src/domain/entities';
 export class FindActiveSessionUseCase {
   constructor(private sessionsRepository: SessionsRepository) {}
 
-  async execute(macAddress: string, type: SessionType): Promise<Sessions | null> {
-    return this.sessionsRepository.findActive(macAddress, type);
+  async execute(userId: string, type: SessionType): Promise<Sessions | null> {
+    return this.sessionsRepository.findActive(userId, type);
   }
 }

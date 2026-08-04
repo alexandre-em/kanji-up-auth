@@ -16,26 +16,18 @@ export class MongooseScansRepository implements ScansRepository {
     return result.toObject();
   }
 
-  async findByMacAddress(macAddress: string, page: number, limit: number): Promise<PaginatedScans> {
+  async findByUserId(userId: string, page: number, limit: number): Promise<PaginatedScans> {
     const [docs, totalDocs] = await Promise.all([
       this.scanModel
-        .find({ macAddress })
+        .find({ userId })
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit)
         .select('-_id -__v')
         .exec(),
-      this.scanModel.countDocuments({ macAddress }),
+      this.scanModel.countDocuments({ userId }),
     ]);
 
     return { docs: docs.map((doc) => doc.toObject()), totalDocs };
-  }
-
-  async migrateMacAddress(fromMacAddress: string, toMacAddress: string): Promise<void> {
-    await this.scanModel.updateMany({ macAddress: fromMacAddress }, { $set: { macAddress: toMacAddress } });
-  }
-
-  async deleteByMacAddress(macAddress: string): Promise<void> {
-    await this.scanModel.deleteMany({ macAddress });
   }
 }

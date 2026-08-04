@@ -1,6 +1,6 @@
 export type ScanResult = {
   scanId: string;
-  macAddress: string;
+  userId: string;
   imageUrl: string;
   recognizedText: string;
 

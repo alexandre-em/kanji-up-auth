@@ -8,7 +8,7 @@ export class Scan extends Document {
   scanId: string;
 
   @Prop({ type: String, required: true })
-  macAddress: string;
+  userId: string;
 
   @Prop({ type: String, required: true })
   imageUrl: string;
@@ -21,4 +21,4 @@ export class Scan extends Document {
 
 export const ScanSchema = SchemaFactory.createForClass(Scan);
 
-ScanSchema.index({ macAddress: 1 });
+ScanSchema.index({ userId: 1 });

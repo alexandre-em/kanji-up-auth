@@ -8,11 +8,11 @@ import { todayUTC } from './date';
 export class GetTodayMissionsUseCase {
   constructor(private missionsRepository: DailyMissionsRepository) {}
 
-  async execute(macAddress: string): Promise<DailyMission> {
+  async execute(userId: string): Promise<DailyMission> {
     const date = todayUTC();
-    const existing = await this.missionsRepository.findByMacAddressAndDate(macAddress, date);
+    const existing = await this.missionsRepository.findByUserIdAndDate(userId, date);
     if (existing) return existing;
 
-    return this.missionsRepository.create(macAddress, date);
+    return this.missionsRepository.create(userId, date);
   }
 }

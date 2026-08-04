@@ -3,7 +3,7 @@ import { IsIn, IsNotEmpty, IsString } from 'class-validator';
 
 export class DailyMissionResponseDto {
   @Expose()
-  macAddress: string;
+  userId: string;
 
   @Expose()
   date: string;
@@ -18,7 +18,7 @@ export class DailyMissionResponseDto {
 export class CompleteMissionTaskDto {
   @IsString()
   @IsNotEmpty()
-  macAddress: string;
+  userId: string;
 
   @IsIn(['kanjiSession', 'wordSession', 'kanjiMastery'])
   task: 'kanjiSession' | 'wordSession' | 'kanjiMastery';

@@ -22,11 +22,8 @@ export class MongooseSessionsRepository implements SessionsRepository {
     return result ? result.toObject() : null;
   }
 
-  async findActive(macAddress: string, type: SessionType): Promise<Sessions | null> {
-    const result = await this.sessionModel
-      .findOne({ macAddress, type, status: SessionStatus.IN_PROGRESS })
-      .select('-_id -__v')
-      .exec();
+  async findActive(userId: string, type: SessionType): Promise<Sessions | null> {
+    const result = await this.sessionModel.findOne({ userId, type, status: SessionStatus.IN_PROGRESS }).select('-_id -__v').exec();
 
     return result ? result.toObject() : null;
   }
@@ -40,13 +37,5 @@ export class MongooseSessionsRepository implements SessionsRepository {
 
   async setStatus(sessionId: string, status: SessionStatus, score: number | null): Promise<void> {
     await this.sessionModel.updateOne({ sessionId }, { $set: { status, score } });
-  }
-
-  async migrateMacAddress(fromMacAddress: string, toMacAddress: string): Promise<void> {
-    await this.sessionModel.updateMany({ macAddress: fromMacAddress }, { $set: { macAddress: toMacAddress } });
-  }
-
-  async deleteByMacAddress(macAddress: string): Promise<void> {
-    await this.sessionModel.deleteMany({ macAddress });
   }
 }

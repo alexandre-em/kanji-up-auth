@@ -5,7 +5,7 @@ import { PaginatedScans, ScansRepository } from 'src/application/repositories/sc
 export class ListScansUseCase {
   constructor(private scansRepository: ScansRepository) {}
 
-  execute(macAddress: string, page: number, limit: number): Promise<PaginatedScans> {
-    return this.scansRepository.findByMacAddress(macAddress, page, limit);
+  execute(userId: string, page: number, limit: number): Promise<PaginatedScans> {
+    return this.scansRepository.findByUserId(userId, page, limit);
   }
 }

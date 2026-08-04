@@ -22,23 +22,23 @@ export class CompleteMissionTaskUseCase {
     private usersRepository: UsersRepository,
   ) {}
 
-  async execute(macAddress: string, task: MissionTaskKey): Promise<CompleteMissionTaskResult> {
+  async execute(userId: string, task: MissionTaskKey): Promise<CompleteMissionTaskResult> {
     const date = todayUTC();
-    let mission = await this.missionsRepository.findByMacAddressAndDate(macAddress, date);
-    if (!mission) mission = await this.missionsRepository.create(macAddress, date);
+    let mission = await this.missionsRepository.findByUserIdAndDate(userId, date);
+    if (!mission) mission = await this.missionsRepository.create(userId, date);
 
     // Idempotent: a task already marked done today doesn't re-trigger anything
     if (mission.tasks[task]) return { mission, rewardGranted: false, creditsGranted: 0 };
 
-    mission = await this.missionsRepository.completeTask(macAddress, date, task);
+    mission = await this.missionsRepository.completeTask(userId, date, task);
 
     const allDone = Object.values(mission.tasks).every(Boolean);
     if (!allDone || mission.rewardClaimed) return { mission, rewardGranted: false, creditsGranted: 0 };
 
-    const claimed = await this.missionsRepository.claimReward(macAddress, date);
+    const claimed = await this.missionsRepository.claimReward(userId, date);
     if (!claimed) return { mission, rewardGranted: false, creditsGranted: 0 };
 
-    const id = await this.usersRepository.findIdByKey('macAddress', macAddress);
+    const id = await this.usersRepository.findIdByKey('userId', userId);
     await this.usersRepository.incrementCredits(id, MISSION_REWARD_CREDITS);
 
     return { mission: claimed, rewardGranted: true, creditsGranted: MISSION_REWARD_CREDITS };

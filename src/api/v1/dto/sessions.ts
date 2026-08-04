@@ -7,7 +7,7 @@ export class SessionResponseDto {
   sessionId: string;
 
   @Expose()
-  macAddress: string;
+  userId: string;
 
   @Expose()
   type: SessionType;
@@ -34,7 +34,7 @@ export class SessionResponseDto {
 export class CreateSessionDto {
   @IsString()
   @IsNotEmpty()
-  macAddress: string;
+  userId: string;
 
   @IsIn(Object.values(SessionType))
   type: SessionType;

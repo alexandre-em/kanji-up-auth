@@ -5,7 +5,7 @@ import { SubscriptionPlan } from 'src/domain/entities';
 export class VerifyPurchaseDto {
   @IsString()
   @IsNotEmpty()
-  macAddress: string;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()

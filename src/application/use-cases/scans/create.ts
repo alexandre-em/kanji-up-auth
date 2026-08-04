@@ -7,7 +7,7 @@ import { VisionRepository } from 'src/application/repositories/vision';
 import { SegmentedToken, SegmentTextUseCase } from './segmentText';
 
 export type CreateScanInput = {
-  macAddress: string;
+  userId: string;
   imageBuffer: Buffer;
   contentType: string;
 };
@@ -40,7 +40,7 @@ export class CreateScanUseCase {
     const imageUrl = await this.storageRepository.upload(key, input.imageBuffer, input.contentType);
 
     const scan = await this.scansRepository.create({
-      macAddress: input.macAddress,
+      userId: input.userId,
       imageUrl,
       recognizedText: text,
     });

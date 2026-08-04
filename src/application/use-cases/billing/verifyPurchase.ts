@@ -4,7 +4,7 @@ import { UsersRepository } from 'src/application/repositories/users';
 import { SubscriptionPlan } from 'src/domain/entities';
 
 export type VerifyPurchaseInput = {
-  macAddress: string;
+  userId: string;
   productId: string;
   purchaseToken: string;
   planType: 'monthly' | 'annual' | 'lifetime';
@@ -34,7 +34,7 @@ export class VerifyPurchaseUseCase {
       subscribedUntil = expiryTime;
     }
 
-    const id = await this.userRepository.findIdByKey('macAddress', input.macAddress);
+    const id = await this.userRepository.findIdByKey('userId', input.userId);
     await this.userRepository.update(id, {
       subscriptionPlan: SubscriptionPlan.PREMIUM,
       subscribedAt: new Date(),

@@ -10,7 +10,7 @@ export class Session extends Document {
   sessionId: string;
 
   @Prop({ type: String, required: true })
-  macAddress: string;
+  userId: string;
 
   @Prop({ type: String, enum: Object.values(SessionType), required: true })
   type: SessionType;
@@ -34,4 +34,4 @@ export class Session extends Document {
 
 export const SessionSchema = SchemaFactory.createForClass(Session);
 
-SessionSchema.index({ macAddress: 1, type: 1, status: 1 });
+SessionSchema.index({ userId: 1, type: 1, status: 1 });
