@@ -3,22 +3,20 @@ import { UsersRepository } from 'src/application/repositories/users';
 
 export type UnlockScope = 'kanji' | 'tier';
 
-// Tier key format: "jlpt:3", "jlpt:2", "jlpt:1", "grade:8" — free tiers (JLPT N5/N4, grade 1-6)
-// never appear here, there's nothing to buy.
-// Per-kanji is cheaper than the tier it belongs to; buying more than ~10 individually costs more
-// than just buying the whole tier, which is the intended nudge toward the bulk option.
+// Tier key format: "jlpt:1", "grade:8" — the only two paid tiers. Every other tier (JLPT
+// N5-N2, every other school grade) is free, never appears here, nothing to buy.
+// Per-kanji is priced to be individually reachable by a motivated free user (~10 rewarded ads
+// per kanji). Bulk is deliberately steep — ~20% off buying every single kanji in the tier
+// individually (1232 kanji for jlpt:1, 1130 for grade:8) — not a realistic credits target, it's
+// meant to push toward Premium (which bypasses this cost entirely) rather than be grindable.
 const PER_KANJI_COST: Record<string, number> = {
-  'jlpt:3': 2,
-  'jlpt:2': 4,
-  'jlpt:1': 8,
-  'grade:8': 3,
+  'jlpt:1': 5,
+  'grade:8': 5,
 };
 
 const BULK_TIER_COST: Record<string, number> = {
-  'jlpt:3': 20,
-  'jlpt:2': 50,
-  'jlpt:1': 100,
-  'grade:8': 50,
+  'jlpt:1': 4928,
+  'grade:8': 4520,
 };
 
 export type UnlockContentInput = {
