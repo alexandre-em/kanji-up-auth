@@ -3,13 +3,15 @@ export enum SubscriptionPlan {
   PREMIUM = 'premium',
 }
 
-// Per-kanji mastery score, shared between kanji and word training modes. Client owns the running
-// totals (increments locally per answer) and pushes a full replacement here once per finished
-// session — mirrors the existing web app's applications.kanji scoring, not a new design.
+// Per-kanji accuracy (correct / total attempts), kanji-only — word evaluation has its own,
+// separate progression (not yet built). Client owns the running totals (increments locally per
+// answer) and pushes a full replacement here once per finished session. progression values may
+// still be a plain number for accounts predating this shape (the old momentum score); the client
+// normalizes those on read, nothing to migrate server-side.
 export type KanjiProgression = {
   totalScore: number;
   dailyScores: Record<string, number>;
-  progression: Record<string, number>;
+  progression: Record<string, { correct: number; total: number } | number>;
 };
 
 export type UnregisteredUsersFields = {

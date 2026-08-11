@@ -69,7 +69,11 @@ export class User extends Document {
     type: { totalScore: Number, dailyScores: Object, progression: Object },
     default: () => ({ totalScore: 0, dailyScores: {}, progression: {} }),
   })
-  kanjiProgression: { totalScore: number; dailyScores: Record<string, number>; progression: Record<string, number> };
+  kanjiProgression: {
+    totalScore: number;
+    dailyScores: Record<string, number>;
+    progression: Record<string, { correct: number; total: number } | number>;
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
