@@ -11,8 +11,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateScanUseCase } from 'src/application/use-cases/scans/create';
-import { ListScansUseCase } from 'src/application/use-cases/scans/list';
+import { CreateScanUseCase } from '../../../application/use-cases/scans/create';
+import { ListScansUseCase } from '../../../application/use-cases/scans/list';
 
 import { CreateScanDto, CreateScanResponseDto, ListScansResponseDto } from '../dto/scans';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';

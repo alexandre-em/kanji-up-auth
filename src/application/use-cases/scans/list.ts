@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PaginatedScans, ScansRepository } from 'src/application/repositories/scans';
+import { PaginatedScans, ScansRepository } from '../../repositories/scans';
 
 @Injectable()
 export class ListScansUseCase {

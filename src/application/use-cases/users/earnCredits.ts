@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/application/repositories/users';
+import { UsersRepository } from '../../repositories/users';
 
 // Fixed server-side reward: the client only reports that an ad finished, it never gets to pick
 // the amount, so a tampered client can't just request an arbitrary number of credits

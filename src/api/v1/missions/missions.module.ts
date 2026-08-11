@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CompleteMissionTaskUseCase } from 'src/application/use-cases/missions/completeTask';
-import { GetTodayMissionsUseCase } from 'src/application/use-cases/missions/getToday';
-import { DailyMissionsRepositoryModule } from 'src/infrastructure/repositories/missions.module';
-import { UsersRepositoryModule } from 'src/infrastructure/repositories/users.module';
+import { CompleteMissionTaskUseCase } from '../../../application/use-cases/missions/completeTask';
+import { GetTodayMissionsUseCase } from '../../../application/use-cases/missions/getToday';
+import { DailyMissionsRepositoryModule } from '../../../infrastructure/repositories/missions.module';
+import { UsersRepositoryModule } from '../../../infrastructure/repositories/users.module';
 
 import { MissionsController } from './missions.controller';
 

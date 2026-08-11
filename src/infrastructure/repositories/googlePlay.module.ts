@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { GooglePlayRepository } from 'src/application/repositories/googlePlay';
+import { GooglePlayRepository } from '../../application/repositories/googlePlay';
 
 import { GooglePlayApiRepository } from './googlePlay';
 

@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Param, Patch, Post, UseInterceptors } from '@nestjs/common';
-import { CreateUserUseCase } from 'src/application/use-cases/users/create';
-import { EarnCreditsUseCase } from 'src/application/use-cases/users/earnCredits';
-import { FindByMacAddressUseCase } from 'src/application/use-cases/users/findByMacAddress';
-import { FindByUserIdUseCase } from 'src/application/use-cases/users/findByUserId';
-import { RecoverAccountUseCase } from 'src/application/use-cases/users/recoverAccount';
-import { UnlockContentUseCase } from 'src/application/use-cases/users/unlockContent';
-import { UpdateKanjiProgressionUseCase } from 'src/application/use-cases/users/updateKanjiProgression';
+import { CreateUserUseCase } from '../../../application/use-cases/users/create';
+import { EarnCreditsUseCase } from '../../../application/use-cases/users/earnCredits';
+import { FindByMacAddressUseCase } from '../../../application/use-cases/users/findByMacAddress';
+import { FindByUserIdUseCase } from '../../../application/use-cases/users/findByUserId';
+import { RecoverAccountUseCase } from '../../../application/use-cases/users/recoverAccount';
+import { UnlockContentUseCase } from '../../../application/use-cases/users/unlockContent';
+import { UpdateKanjiProgressionUseCase } from '../../../application/use-cases/users/updateKanjiProgression';
 
 import {
   CreateUserDto,

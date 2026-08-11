@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { GooglePlayRepository } from 'src/application/repositories/googlePlay';
-import { UsersRepository } from 'src/application/repositories/users';
-import { SubscriptionPlan } from 'src/domain/entities';
+import { GooglePlayRepository } from '../../repositories/googlePlay';
+import { UsersRepository } from '../../repositories/users';
+import { SubscriptionPlan } from '../../../domain/entities';
 
 export type VerifyPurchaseInput = {
   userId: string;

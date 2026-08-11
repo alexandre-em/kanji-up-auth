@@ -1,4 +1,4 @@
-import { DailyMission, MissionTaskKey } from 'src/domain/entities';
+import { DailyMission, MissionTaskKey } from '../../domain/entities';
 
 export abstract class DailyMissionsRepository {
   abstract findByUserIdAndDate(userId: string, date: string): Promise<DailyMission | null>;

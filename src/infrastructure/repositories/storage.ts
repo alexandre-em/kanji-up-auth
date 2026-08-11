@@ -1,6 +1,6 @@
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
-import { StorageRepository } from 'src/application/repositories/storage';
+import { StorageRepository } from '../../application/repositories/storage';
 
 // Cloudflare R2, S3-compatible — same account/bucket kanjiup already uses for kanji/radical
 // images (src/config/aws.ts there), just a different key prefix for this service's own content

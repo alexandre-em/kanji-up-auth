@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ScansRepository } from 'src/application/repositories/scans';
+import { ScansRepository } from '../../application/repositories/scans';
 
 import { Scan, ScanSchema } from '../database/models/mongoose/scans';
 import { MongooseScansRepository } from './scans';

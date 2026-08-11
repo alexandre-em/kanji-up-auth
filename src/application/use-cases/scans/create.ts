@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { ScansRepository } from 'src/application/repositories/scans';
-import { StorageRepository } from 'src/application/repositories/storage';
-import { VisionRepository } from 'src/application/repositories/vision';
+import { ScansRepository } from '../../repositories/scans';
+import { StorageRepository } from '../../repositories/storage';
+import { VisionRepository } from '../../repositories/vision';
 
 import { SegmentedToken, SegmentTextUseCase } from './segmentText';
 

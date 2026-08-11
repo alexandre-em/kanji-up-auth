@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UsersRepository } from 'src/application/repositories/users';
-import { Users } from 'src/domain/entities';
+import { UsersRepository } from '../../application/repositories/users';
+import { Users } from '../../domain/entities';
 
 import { User as MongooseUser } from '../database/models/mongoose/users';
 

@@ -1,4 +1,4 @@
-import { ScanResult } from 'src/domain/entities';
+import { ScanResult } from '../../domain/entities';
 
 export type PaginatedScans = {
   docs: ScanResult[];

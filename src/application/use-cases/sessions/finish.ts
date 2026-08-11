@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { SessionsRepository } from 'src/application/repositories/sessions';
-import { SessionStatus } from 'src/domain/entities';
+import { SessionsRepository } from '../../repositories/sessions';
+import { SessionStatus } from '../../../domain/entities';
 
 @Injectable()
 export class FinishSessionUseCase {

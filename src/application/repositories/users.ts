@@ -1,4 +1,4 @@
-import { UnregisteredUsersFields, Users } from 'src/domain/entities';
+import { UnregisteredUsersFields, Users } from '../../domain/entities';
 
 export abstract class UsersRepository {
   abstract findIdByKey(key: keyof Users, value: string): Promise<string>;

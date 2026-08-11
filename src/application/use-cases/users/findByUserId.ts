@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/application/repositories/users';
+import { UsersRepository } from '../../repositories/users';
 
 @Injectable()
 export class FindByUserIdUseCase {

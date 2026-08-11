@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { WordLookupRepository } from 'src/application/repositories/wordLookup';
+import { WordLookupRepository } from '../../application/repositories/wordLookup';
 
 import { HttpWordLookupRepository } from './wordLookup';
 

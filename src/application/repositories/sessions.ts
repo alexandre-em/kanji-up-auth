@@ -1,4 +1,4 @@
-import { Question, SessionStatus, SessionType, Sessions } from 'src/domain/entities';
+import { Question, SessionStatus, SessionType, Sessions } from '../../domain/entities';
 
 export abstract class SessionsRepository {
   abstract create(session: Omit<Sessions, 'sessionId' | 'createdAt' | 'updatedAt'>): Promise<Sessions>;

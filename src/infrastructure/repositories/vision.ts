@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { google } from 'googleapis';
-import { TextRecognitionResult, VisionRepository } from 'src/application/repositories/vision';
+import { TextRecognitionResult, VisionRepository } from '../../application/repositories/vision';
 
 // images.annotate requires OAuth2 (scope cloud-platform or cloud-vision) — verified against the
 // API reference, it does NOT accept a plain API key despite what older tutorials suggest. Same

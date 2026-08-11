@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { SessionsRepository } from 'src/application/repositories/sessions';
-import { Question, SessionStatus } from 'src/domain/entities';
+import { SessionsRepository } from '../../repositories/sessions';
+import { Question, SessionStatus } from '../../../domain/entities';
 
 @Injectable()
 export class UpdateQuestionUseCase {

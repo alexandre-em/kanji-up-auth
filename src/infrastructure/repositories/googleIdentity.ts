@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
-import { GoogleIdentityRepository, VerifiedGoogleIdentity } from 'src/application/repositories/googleIdentity';
+import { GoogleIdentityRepository, VerifiedGoogleIdentity } from '../../application/repositories/googleIdentity';
 
 // Verified against Google's own server-side verification docs: OAuth2Client#verifyIdToken with
 // {idToken, audience}, payload read via ticket.getPayload() — sub/email/picture/name

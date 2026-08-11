@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UseInterceptors } from '@nestjs/common';
-import { AbandonSessionUseCase } from 'src/application/use-cases/sessions/abandon';
-import { CreateSessionUseCase } from 'src/application/use-cases/sessions/create';
-import { FinishSessionUseCase } from 'src/application/use-cases/sessions/finish';
-import { FindActiveSessionUseCase } from 'src/application/use-cases/sessions/findActive';
-import { UpdateQuestionUseCase } from 'src/application/use-cases/sessions/updateQuestion';
-import { SessionType } from 'src/domain/entities';
+import { AbandonSessionUseCase } from '../../../application/use-cases/sessions/abandon';
+import { CreateSessionUseCase } from '../../../application/use-cases/sessions/create';
+import { FinishSessionUseCase } from '../../../application/use-cases/sessions/finish';
+import { FindActiveSessionUseCase } from '../../../application/use-cases/sessions/findActive';
+import { UpdateQuestionUseCase } from '../../../application/use-cases/sessions/updateQuestion';
+import { SessionType } from '../../../domain/entities';
 
 import { CreateSessionDto, FinishSessionDto, SessionResponseDto, UpdateQuestionDto } from '../dto/sessions';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';

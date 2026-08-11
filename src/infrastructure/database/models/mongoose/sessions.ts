@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { randomUUID } from 'crypto';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
-import { SessionStatus, SessionType } from 'src/domain/entities';
+import { SessionStatus, SessionType } from '../../../../domain/entities';
 
 @Schema({ timestamps: { createdAt: true, updatedAt: true } })
 export class Session extends Document {

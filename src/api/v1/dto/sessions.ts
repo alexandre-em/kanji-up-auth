@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { IsArray, IsIn, IsNotEmpty, IsNumber, IsObject, IsString, Min } from 'class-validator';
-import { SessionStatus, SessionType } from 'src/domain/entities';
+import { SessionStatus, SessionType } from '../../../domain/entities';
 
 export class SessionResponseDto {
   @Expose()

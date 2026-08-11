@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { DailyMissionsRepository } from 'src/application/repositories/missions';
-import { DailyMission, MissionTaskKey } from 'src/domain/entities';
+import { DailyMissionsRepository } from '../../application/repositories/missions';
+import { DailyMission, MissionTaskKey } from '../../domain/entities';
 
 import { DailyMission as MongooseDailyMission } from '../database/models/mongoose/missions';
 

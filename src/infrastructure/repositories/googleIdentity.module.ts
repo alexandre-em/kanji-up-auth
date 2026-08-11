@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { GoogleIdentityRepository } from 'src/application/repositories/googleIdentity';
+import { GoogleIdentityRepository } from '../../application/repositories/googleIdentity';
 
 import { GoogleOAuthIdentityRepository } from './googleIdentity';
 

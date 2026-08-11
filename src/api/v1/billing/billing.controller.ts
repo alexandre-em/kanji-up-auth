@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { VerifyPurchaseUseCase } from 'src/application/use-cases/billing/verifyPurchase';
+import { VerifyPurchaseUseCase } from '../../../application/use-cases/billing/verifyPurchase';
 
 import { VerifyPurchaseDto, VerifyPurchaseResponseDto } from '../dto/billing';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';

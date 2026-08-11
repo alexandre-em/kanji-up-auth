@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DailyMissionsRepository } from 'src/application/repositories/missions';
-import { DailyMission } from 'src/domain/entities';
+import { DailyMissionsRepository } from '../../repositories/missions';
+import { DailyMission } from '../../../domain/entities';
 
 import { todayUTC } from './date';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/application/repositories/users';
-import { SubscriptionPlan, UnregisteredUsersFields } from 'src/domain/entities';
+import { UsersRepository } from '../../repositories/users';
+import { SubscriptionPlan, UnregisteredUsersFields } from '../../../domain/entities';
 
 type CreateUserInput = Omit<
   UnregisteredUsersFields,

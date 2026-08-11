@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/application/repositories/users';
+import { UsersRepository } from '../../repositories/users';
 
 export type UnlockScope = 'kanji' | 'tier';
 

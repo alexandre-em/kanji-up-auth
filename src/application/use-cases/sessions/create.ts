@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { SessionsRepository } from 'src/application/repositories/sessions';
-import { Question, SessionStatus, Sessions, SessionType } from 'src/domain/entities';
+import { SessionsRepository } from '../../repositories/sessions';
+import { Question, SessionStatus, Sessions, SessionType } from '../../../domain/entities';
 
 export type CreateSessionInput = {
   userId: string;

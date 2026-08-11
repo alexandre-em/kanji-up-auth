@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AbandonSessionUseCase } from 'src/application/use-cases/sessions/abandon';
-import { CreateSessionUseCase } from 'src/application/use-cases/sessions/create';
-import { FinishSessionUseCase } from 'src/application/use-cases/sessions/finish';
-import { FindActiveSessionUseCase } from 'src/application/use-cases/sessions/findActive';
-import { UpdateQuestionUseCase } from 'src/application/use-cases/sessions/updateQuestion';
-import { SessionsRepositoryModule } from 'src/infrastructure/repositories/sessions.module';
+import { AbandonSessionUseCase } from '../../../application/use-cases/sessions/abandon';
+import { CreateSessionUseCase } from '../../../application/use-cases/sessions/create';
+import { FinishSessionUseCase } from '../../../application/use-cases/sessions/finish';
+import { FindActiveSessionUseCase } from '../../../application/use-cases/sessions/findActive';
+import { UpdateQuestionUseCase } from '../../../application/use-cases/sessions/updateQuestion';
+import { SessionsRepositoryModule } from '../../../infrastructure/repositories/sessions.module';
 
 import { SessionsController } from './sessions.controller';
 

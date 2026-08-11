@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch, Query, UseInterceptors } from '@nestjs/common';
-import { CompleteMissionTaskUseCase } from 'src/application/use-cases/missions/completeTask';
-import { GetTodayMissionsUseCase } from 'src/application/use-cases/missions/getToday';
+import { CompleteMissionTaskUseCase } from '../../../application/use-cases/missions/completeTask';
+import { GetTodayMissionsUseCase } from '../../../application/use-cases/missions/getToday';
 
 import { CompleteMissionResponseDto, CompleteMissionTaskDto, DailyMissionResponseDto } from '../dto/missions';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';

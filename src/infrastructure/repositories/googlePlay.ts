@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { androidpublisher_v3, google } from 'googleapis';
-import { GooglePlayRepository, ProductVerification, SubscriptionVerification } from 'src/application/repositories/googlePlay';
+import { GooglePlayRepository, ProductVerification, SubscriptionVerification } from '../../application/repositories/googlePlay';
 
 @Injectable()
 export class GooglePlayApiRepository implements GooglePlayRepository {

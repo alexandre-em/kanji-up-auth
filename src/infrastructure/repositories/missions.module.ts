@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DailyMissionsRepository } from 'src/application/repositories/missions';
+import { DailyMissionsRepository } from '../../application/repositories/missions';
 
 import { DailyMission, DailyMissionSchema } from '../database/models/mongoose/missions';
 import { MongooseDailyMissionsRepository } from './missions';

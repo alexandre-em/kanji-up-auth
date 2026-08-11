@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/application/repositories/users';
-import { KanjiProgression } from 'src/domain/entities';
+import { UsersRepository } from '../../repositories/users';
+import { KanjiProgression } from '../../../domain/entities';
 
 @Injectable()
 export class UpdateKanjiProgressionUseCase {

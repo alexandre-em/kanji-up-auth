@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { GoogleIdentityRepository } from 'src/application/repositories/googleIdentity';
-import { UsersRepository } from 'src/application/repositories/users';
+import { GoogleIdentityRepository } from '../../repositories/googleIdentity';
+import { UsersRepository } from '../../repositories/users';
 
 export type RecoverAccountInput = {
   userId: string;

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { VerifyPurchaseUseCase } from 'src/application/use-cases/billing/verifyPurchase';
-import { GooglePlayRepositoryModule } from 'src/infrastructure/repositories/googlePlay.module';
-import { UsersRepositoryModule } from 'src/infrastructure/repositories/users.module';
+import { VerifyPurchaseUseCase } from '../../../application/use-cases/billing/verifyPurchase';
+import { GooglePlayRepositoryModule } from '../../../infrastructure/repositories/googlePlay.module';
+import { UsersRepositoryModule } from '../../../infrastructure/repositories/users.module';
 
 import { BillingController } from './billing.controller';
 

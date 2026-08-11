@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { IsIn, IsNotEmpty, IsString } from 'class-validator';
-import { SubscriptionPlan } from 'src/domain/entities';
+import { SubscriptionPlan } from '../../../domain/entities';
 
 export class VerifyPurchaseDto {
   @IsString()

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { WordLookupRepository, WordMatch } from 'src/application/repositories/wordLookup';
+import { WordLookupRepository, WordMatch } from '../../application/repositories/wordLookup';
 
 type WordSearchResponse = {
   docs: { word: string[]; word_id: string }[];

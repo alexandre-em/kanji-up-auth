@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { VisionRepository } from 'src/application/repositories/vision';
+import { VisionRepository } from '../../application/repositories/vision';
 
 import { GoogleVisionRepository } from './vision';
 

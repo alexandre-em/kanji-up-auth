@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { WordLookupRepository } from 'src/application/repositories/wordLookup';
+import { WordLookupRepository } from '../../repositories/wordLookup';
 
 // Most real words are 1-4 characters; capping the window here bounds the number of lookups per
 // scan rather than trying implausibly long candidates
