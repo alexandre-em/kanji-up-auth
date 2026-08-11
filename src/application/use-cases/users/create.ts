@@ -31,7 +31,7 @@ export class CreateUserUseCase {
       lastFreeCreditDate: null,
       unlockedDifficulties: [],
       unlockedKanji: [],
-      kanjiProgression: { totalScore: 0, dailyScores: {}, progression: {} },
+      kanjiProgression: { totalScore: 0, dailyScores: {}, progression: {}, wordProgression: {} },
     });
   }
 }

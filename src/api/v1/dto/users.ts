@@ -50,6 +50,7 @@ export class FindUserResponseDto {
     totalScore: number;
     dailyScores: Record<string, number>;
     progression: Record<string, { correct: number; total: number } | number>;
+    wordProgression: Record<string, { correct: number; total: number }>;
   };
 }
 
@@ -97,4 +98,7 @@ export class UpdateKanjiProgressionDto {
 
   @IsObject()
   progression: Record<string, { correct: number; total: number } | number>;
+
+  @IsObject()
+  wordProgression: Record<string, { correct: number; total: number }>;
 }

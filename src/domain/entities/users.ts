@@ -3,15 +3,16 @@ export enum SubscriptionPlan {
   PREMIUM = 'premium',
 }
 
-// Per-kanji accuracy (correct / total attempts), kanji-only — word evaluation has its own,
-// separate progression (not yet built). Client owns the running totals (increments locally per
-// answer) and pushes a full replacement here once per finished session. progression values may
-// still be a plain number for accounts predating this shape (the old momentum score); the client
-// normalizes those on read, nothing to migrate server-side.
+// Per-kanji / per-word accuracy (correct / total attempts), tracked separately. Client owns the
+// running totals (increments locally per answer) and pushes a full replacement here once per
+// finished session. progression values may still be a plain number for accounts predating this
+// shape (the old momentum score); the client normalizes those on read, nothing to migrate
+// server-side. wordProgression is new and never has that legacy shape.
 export type KanjiProgression = {
   totalScore: number;
   dailyScores: Record<string, number>;
   progression: Record<string, { correct: number; total: number } | number>;
+  wordProgression: Record<string, { correct: number; total: number }>;
 };
 
 export type UnregisteredUsersFields = {

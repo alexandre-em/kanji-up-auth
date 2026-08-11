@@ -66,13 +66,14 @@ export class User extends Document {
   // Shape validated at the DTO boundary, not here — client sends a full replacement per finished
   // training session
   @Prop({
-    type: { totalScore: Number, dailyScores: Object, progression: Object },
-    default: () => ({ totalScore: 0, dailyScores: {}, progression: {} }),
+    type: { totalScore: Number, dailyScores: Object, progression: Object, wordProgression: Object },
+    default: () => ({ totalScore: 0, dailyScores: {}, progression: {}, wordProgression: {} }),
   })
   kanjiProgression: {
     totalScore: number;
     dailyScores: Record<string, number>;
     progression: Record<string, { correct: number; total: number } | number>;
+    wordProgression: Record<string, { correct: number; total: number }>;
   };
 }
 
