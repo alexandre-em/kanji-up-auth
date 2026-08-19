@@ -13,10 +13,15 @@ export class User extends Document {
   @Prop({ type: String, required: true, unique: true, default: randomUUID })
   userId: string;
 
-  @Prop({ type: String, default: null, unique: true, sparse: true })
+  // No `default: null` here on purpose: Mongoose would write an explicit null on every anonymous
+  // account, and a sparse unique index only excludes documents where the field is entirely
+  // absent — not ones explicitly set to null. With a default, every account after the very first
+  // ever created (anonymous, no linked provider) collided on this index (E11000) since they all
+  // shared the same null value. Leaving the field genuinely unset lets sparse do its job.
+  @Prop({ type: String, unique: true, sparse: true })
   providerId: string | null;
 
-  @Prop({ type: String, default: null, unique: true, sparse: true })
+  @Prop({ type: String, unique: true, sparse: true })
   email: string | null;
 
   @Prop({ type: Date, default: null })
