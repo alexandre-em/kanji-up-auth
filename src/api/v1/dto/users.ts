@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { IsIn, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, MinLength } from 'class-validator';
+
 import { SubscriptionPlan } from '../../../domain/entities';
 
 export class FindUserResponseDto {
@@ -75,6 +76,20 @@ export class RecoverAccountResponseDto {
 
   @Expose()
   migrated: boolean;
+}
+
+export class SignInWithGoogleDto {
+  @IsString()
+  @IsNotEmpty()
+  idToken: string;
+
+  @IsString()
+  macAddress: string;
+}
+
+export class SignInWithGoogleResponseDto {
+  @Expose()
+  userId: string;
 }
 
 export class UnlockContentDto {
