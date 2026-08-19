@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SessionsRepository } from '../../application/repositories/sessions';
-import { Question, SessionStatus, SessionType, Sessions } from '../../domain/entities';
 
+import { SessionsRepository } from '../../application/repositories/sessions';
+import { Question, Sessions, SessionStatus, SessionType } from '../../domain/entities';
 import { Session as MongooseSession } from '../database/models/mongoose/sessions';
 
 @Injectable()
@@ -23,16 +23,23 @@ export class MongooseSessionsRepository implements SessionsRepository {
   }
 
   async findActive(userId: string, type: SessionType): Promise<Sessions | null> {
-    const result = await this.sessionModel.findOne({ userId, type, status: SessionStatus.IN_PROGRESS }).select('-_id -__v').exec();
+    const result = await this.sessionModel
+      .findOne({ userId, type, status: SessionStatus.IN_PROGRESS })
+      .select('-_id -__v')
+      .exec();
 
     return result ? result.toObject() : null;
   }
 
-  async updateQuestion(sessionId: string, atIndex: number, question: Question, nextIndex: number): Promise<void> {
-    await this.sessionModel.updateOne(
-      { sessionId },
-      { $set: { [`questions.${atIndex}`]: question, currentIndex: nextIndex } },
+  async abandonAllActive(userId: string, type: SessionType): Promise<void> {
+    await this.sessionModel.updateMany(
+      { userId, type, status: SessionStatus.IN_PROGRESS },
+      { $set: { status: SessionStatus.ABANDONED, score: null } },
     );
+  }
+
+  async updateQuestion(sessionId: string, atIndex: number, question: Question, nextIndex: number): Promise<void> {
+    await this.sessionModel.updateOne({ sessionId }, { $set: { [`questions.${atIndex}`]: question, currentIndex: nextIndex } });
   }
 
   async setStatus(sessionId: string, status: SessionStatus, score: number | null): Promise<void> {
