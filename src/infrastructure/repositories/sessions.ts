@@ -38,6 +38,18 @@ export class MongooseSessionsRepository implements SessionsRepository {
     );
   }
 
+  async findByUser(userId: string, type: SessionType, page: number, limit: number): Promise<Sessions[]> {
+    const results = await this.sessionModel
+      .find({ userId, type })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select('-_id -__v')
+      .exec();
+
+    return results.map((result) => result.toObject());
+  }
+
   async updateQuestion(sessionId: string, atIndex: number, question: Question, nextIndex: number): Promise<void> {
     await this.sessionModel.updateOne({ sessionId }, { $set: { [`questions.${atIndex}`]: question, currentIndex: nextIndex } });
   }

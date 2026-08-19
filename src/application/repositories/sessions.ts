@@ -10,6 +10,9 @@ export abstract class SessionsRepository {
   // could otherwise sit IN_PROGRESS forever, invisible to future checks. Closing all of them out
   // whenever a new one starts keeps "in progress" meaning at most one per user per type.
   abstract abandonAllActive(userId: string, type: SessionType): Promise<void>;
+  // History listing (any status, most recent first) — distinct from findActive, which only ever
+  // cares about the single in-progress one
+  abstract findByUser(userId: string, type: SessionType, page: number, limit: number): Promise<Sessions[]>;
   abstract updateQuestion(sessionId: string, atIndex: number, question: Question, nextIndex: number): Promise<void>;
   abstract setStatus(sessionId: string, status: SessionStatus, score: number | null): Promise<void>;
 }
