@@ -36,6 +36,7 @@ export class SignInWithGoogleUseCase {
       macAddress: input.macAddress,
       isAnonymous: true,
       adsDeactivated: false,
+      trainingConsent: false,
       subscriptionPlan: SubscriptionPlan.FREE,
       credits: 0,
       lastFreeCreditDate: null,

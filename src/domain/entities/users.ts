@@ -23,6 +23,10 @@ export type UnregisteredUsersFields = {
   macAddress: string;
   isAnonymous: boolean;
   adsDeactivated: boolean;
+  // Opt-in, distinct from the images already being stored for the user's own session history —
+  // this only governs eligibility for a future training-set export, not whether images are sent
+  // or kept at all
+  trainingConsent: boolean;
   subscriptionPlan: SubscriptionPlan;
   credits: number;
   lastFreeCreditDate: Date | null;

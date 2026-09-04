@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from '../../repositories/users';
+
 import { SubscriptionPlan, UnregisteredUsersFields } from '../../../domain/entities';
+import { UsersRepository } from '../../repositories/users';
 
 type CreateUserInput = Omit<
   UnregisteredUsersFields,
@@ -9,6 +10,7 @@ type CreateUserInput = Omit<
   | 'updatedAt'
   | 'isAnonymous'
   | 'adsDeactivated'
+  | 'trainingConsent'
   | 'subscriptionPlan'
   | 'credits'
   | 'lastFreeCreditDate'
@@ -26,6 +28,7 @@ export class CreateUserUseCase {
       ...input,
       isAnonymous: true,
       adsDeactivated: false,
+      trainingConsent: false,
       subscriptionPlan: SubscriptionPlan.FREE,
       credits: 0,
       lastFreeCreditDate: null,

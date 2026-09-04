@@ -1,6 +1,5 @@
-import { randomUUID } from 'crypto';
-
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { randomUUID } from 'crypto';
 import { Document } from 'mongoose';
 
 export enum SubscriptionPlan {
@@ -47,6 +46,12 @@ export class User extends Document {
 
   @Prop({ type: Boolean, default: false })
   adsDeactivated: boolean;
+
+  // Opt-in, distinct from the images already being stored for the user's own session history —
+  // this only governs eligibility for a future training-set export, not whether images are sent
+  // or kept at all
+  @Prop({ type: Boolean, default: false })
+  trainingConsent: boolean;
 
   @Prop({ type: Number, default: 0 })
   credits: number;
