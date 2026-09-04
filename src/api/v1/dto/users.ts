@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { IsIn, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsBoolean, IsIn, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, MinLength } from 'class-validator';
 
 import { SubscriptionPlan } from '../../../domain/entities';
 
@@ -27,6 +27,9 @@ export class FindUserResponseDto {
 
   @Expose()
   adsDeactivated: boolean;
+
+  @Expose()
+  trainingConsent: boolean;
 
   @Expose()
   subscriptionPlan: SubscriptionPlan;
@@ -62,6 +65,10 @@ export class CreateUserDto {
 
   @IsString()
   macAddress: string;
+
+  @IsOptional()
+  @IsBoolean()
+  trainingConsent?: boolean;
 }
 
 export class RecoverAccountDto {
@@ -85,6 +92,10 @@ export class SignInWithGoogleDto {
 
   @IsString()
   macAddress: string;
+
+  @IsOptional()
+  @IsBoolean()
+  trainingConsent?: boolean;
 }
 
 export class SignInWithGoogleResponseDto {

@@ -17,7 +17,11 @@ type CreateUserInput = Omit<
   | 'unlockedDifficulties'
   | 'unlockedKanji'
   | 'kanjiProgression'
->;
+> & {
+  // Opt-in chosen during onboarding — absent (not just false) whenever a caller predates this
+  // field, e.g. any future direct repository use, so it still needs its own default below
+  trainingConsent?: boolean;
+};
 
 @Injectable()
 export class CreateUserUseCase {
@@ -28,7 +32,7 @@ export class CreateUserUseCase {
       ...input,
       isAnonymous: true,
       adsDeactivated: false,
-      trainingConsent: false,
+      trainingConsent: input.trainingConsent ?? false,
       subscriptionPlan: SubscriptionPlan.FREE,
       credits: 0,
       lastFreeCreditDate: null,

@@ -7,6 +7,7 @@ import { UsersRepository } from '../../repositories/users';
 export type SignInWithGoogleInput = {
   idToken: string;
   macAddress: string;
+  trainingConsent?: boolean;
 };
 
 export type SignInWithGoogleResult = {
@@ -36,7 +37,7 @@ export class SignInWithGoogleUseCase {
       macAddress: input.macAddress,
       isAnonymous: true,
       adsDeactivated: false,
-      trainingConsent: false,
+      trainingConsent: input.trainingConsent ?? false,
       subscriptionPlan: SubscriptionPlan.FREE,
       credits: 0,
       lastFreeCreditDate: null,
