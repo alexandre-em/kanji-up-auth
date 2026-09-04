@@ -8,6 +8,7 @@ import { RecoverAccountUseCase } from '../../../application/use-cases/users/reco
 import { SignInWithGoogleUseCase } from '../../../application/use-cases/users/signInWithGoogle';
 import { UnlockContentUseCase } from '../../../application/use-cases/users/unlockContent';
 import { UpdateKanjiProgressionUseCase } from '../../../application/use-cases/users/updateKanjiProgression';
+import { UpdateTrainingConsentUseCase } from '../../../application/use-cases/users/updateTrainingConsent';
 import {
   CreateUserDto,
   FindUserResponseDto,
@@ -17,6 +18,7 @@ import {
   SignInWithGoogleResponseDto,
   UnlockContentDto,
   UpdateKanjiProgressionDto,
+  UpdateTrainingConsentDto,
 } from '../dto/users';
 import { ResponseTransformInterceptor } from '../middlewares/responseValidationInterceptor';
 
@@ -31,6 +33,7 @@ export class UsersController {
     private earnCreditsUseCase: EarnCreditsUseCase,
     private unlockContentUseCase: UnlockContentUseCase,
     private updateKanjiProgressionUseCase: UpdateKanjiProgressionUseCase,
+    private updateTrainingConsentUseCase: UpdateTrainingConsentUseCase,
   ) {}
 
   // Bootstrap only: the one route a client without a stored userId yet can call, on first launch
@@ -79,5 +82,10 @@ export class UsersController {
   @Patch('/:userId/kanji-progression')
   updateKanjiProgression(@Param('userId') userId: string, @Body() body: UpdateKanjiProgressionDto) {
     return this.updateKanjiProgressionUseCase.execute(userId, body);
+  }
+
+  @Patch('/:userId/training-consent')
+  updateTrainingConsent(@Param('userId') userId: string, @Body() body: UpdateTrainingConsentDto) {
+    return this.updateTrainingConsentUseCase.execute(userId, body.trainingConsent);
   }
 }

@@ -115,6 +115,11 @@ export class UnlockContentDto {
   kanjiId?: string;
 }
 
+export class UpdateTrainingConsentDto {
+  @IsBoolean()
+  trainingConsent: boolean;
+}
+
 export class UpdateKanjiProgressionDto {
   @IsNumber()
   totalScore: number;

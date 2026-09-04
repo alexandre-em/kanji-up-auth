@@ -8,6 +8,7 @@ import { RecoverAccountUseCase } from '../../../application/use-cases/users/reco
 import { SignInWithGoogleUseCase } from '../../../application/use-cases/users/signInWithGoogle';
 import { UnlockContentUseCase } from '../../../application/use-cases/users/unlockContent';
 import { UpdateKanjiProgressionUseCase } from '../../../application/use-cases/users/updateKanjiProgression';
+import { UpdateTrainingConsentUseCase } from '../../../application/use-cases/users/updateTrainingConsent';
 import { GoogleIdentityRepositoryModule } from '../../../infrastructure/repositories/googleIdentity.module';
 import { UsersRepositoryModule } from '../../../infrastructure/repositories/users.module';
 import { UsersController } from './users.controller';
@@ -24,6 +25,7 @@ import { UsersController } from './users.controller';
     EarnCreditsUseCase,
     UnlockContentUseCase,
     UpdateKanjiProgressionUseCase,
+    UpdateTrainingConsentUseCase,
   ],
   exports: [],
 })
