@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+
+import { SubscriptionPlan } from '../../../domain/entities';
 import { ScansRepository } from '../../repositories/scans';
 import { StorageRepository } from '../../repositories/storage';
+import { UsersRepository } from '../../repositories/users';
 import { VisionRepository } from '../../repositories/vision';
-
 import { SegmentedToken, SegmentTextUseCase } from './segmentText';
 
 export type CreateScanInput = {
@@ -31,9 +33,16 @@ export class CreateScanUseCase {
     private visionRepository: VisionRepository,
     private scansRepository: ScansRepository,
     private segmentTextUseCase: SegmentTextUseCase,
+    private usersRepository: UsersRepository,
   ) {}
 
   async execute(input: CreateScanInput): Promise<CreateScanResult> {
+    // Checked before the Vision call, not after — Vision bills per request, so a free user's
+    // scan must never reach it.
+    const user = await this.usersRepository.findByUserId(input.userId);
+    if (user.subscriptionPlan !== SubscriptionPlan.PREMIUM)
+      throw new ForbiddenException('OCR scanning requires a premium subscription');
+
     const { text } = await this.visionRepository.recognizeText(input.imageBuffer.toString('base64'));
 
     const key = `scans/${randomUUID()}.${extensionFromContentType(input.contentType)}`;
