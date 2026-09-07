@@ -41,6 +41,10 @@ export class ScanSummaryDto {
   recognizedText: string;
 
   @Expose()
+  @Type(() => ScanTokenDto)
+  tokens: ScanTokenDto[];
+
+  @Expose()
   createdAt: Date;
 }
 
