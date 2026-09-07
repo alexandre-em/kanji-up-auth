@@ -16,6 +16,9 @@ export class Scan extends Document {
   @Prop({ type: String, required: true })
   recognizedText: string;
 
+  @Prop({ type: [{ text: String, wordId: String }], default: [] })
+  tokens: { text: string; wordId: string | null }[];
+
   createdAt: Date;
 }
 

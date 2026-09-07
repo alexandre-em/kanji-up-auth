@@ -37,13 +37,12 @@ export class CreateScanUseCase {
   ) {}
 
   async execute(input: CreateScanInput): Promise<CreateScanResult> {
-    // Checked before the Vision call, not after — Vision bills per request, so a free user's
-    // scan must never reach it.
     const user = await this.usersRepository.findByUserId(input.userId);
     if (user.subscriptionPlan !== SubscriptionPlan.PREMIUM)
       throw new ForbiddenException('OCR scanning requires a premium subscription');
 
     const { text } = await this.visionRepository.recognizeText(input.imageBuffer.toString('base64'));
+    const tokens = await this.segmentTextUseCase.execute(text);
 
     const key = `scans/${randomUUID()}.${extensionFromContentType(input.contentType)}`;
     const imageUrl = await this.storageRepository.upload(key, input.imageBuffer, input.contentType);
@@ -52,9 +51,8 @@ export class CreateScanUseCase {
       userId: input.userId,
       imageUrl,
       recognizedText: text,
+      tokens,
     });
-
-    const tokens = await this.segmentTextUseCase.execute(text);
 
     return { scanId: scan.scanId, imageUrl: scan.imageUrl, recognizedText: text, tokens };
   }
