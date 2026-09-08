@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { BillingModule } from './api/v1/billing/billing.module';
+import { FeedbackModule } from './api/v1/feedback/feedback.module';
 import { HealthController } from './api/v1/health/health.controller';
 import { MissionsModule } from './api/v1/missions/missions.module';
 import { ScansModule } from './api/v1/scans/scans.module';
@@ -16,6 +17,7 @@ import { UsersModule } from './api/v1/users/users.module';
     BillingModule,
     MissionsModule,
     ScansModule,
+    FeedbackModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(`${process.env.DATABASE_URI}/usersv2?retryWrites=true&w=majority`),
   ],
