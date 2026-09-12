@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
+
 import { GoogleIdentityRepository, VerifiedGoogleIdentity } from '../../application/repositories/googleIdentity';
 
 // Verified against Google's own server-side verification docs: OAuth2Client#verifyIdToken with
@@ -9,11 +10,10 @@ export class GoogleOAuthIdentityRepository implements GoogleIdentityRepository {
   private client = new OAuth2Client();
 
   async verifyIdToken(idToken: string): Promise<VerifiedGoogleIdentity> {
-    const ticket = await this.client
-      .verifyIdToken({ idToken, audience: process.env.GOOGLE_OAUTH_CLIENT_ID })
-      .catch(() => {
-        throw new UnauthorizedException('Invalid Google identity token');
-      });
+    const ticket = await this.client.verifyIdToken({ idToken, audience: process.env.GOOGLE_OAUTH_CLIENT_ID }).catch((error) => {
+      console.error('verifyIdToken failed', error);
+      throw new UnauthorizedException('Invalid Google identity token');
+    });
 
     const payload = ticket.getPayload();
     if (!payload?.sub) throw new UnauthorizedException('Invalid Google identity token');
