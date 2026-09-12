@@ -1,6 +1,7 @@
 export type ScanToken = {
   text: string;
   wordId: string | null;
+  reading: string | null;
 };
 
 export type ScanResult = {

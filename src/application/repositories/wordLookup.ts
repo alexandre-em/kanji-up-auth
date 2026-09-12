@@ -1,5 +1,6 @@
 export type WordMatch = {
   wordId: string;
+  reading: string | null;
 };
 
 export abstract class WordLookupRepository {

@@ -5,6 +5,10 @@ import { SegmentTextUseCase } from './segmentText';
 // dictionary — confirms the fix against actual data, not an assumption about what's in it
 const WORD_SERVICE_URL = 'https://api.word.kanjiup.alexandre-em.fr/words';
 
+function matched(text: string) {
+  return { text, wordId: expect.any(String) as string, reading: expect.any(String) as string };
+}
+
 describe('SegmentTextUseCase (integration, live word API)', () => {
   let useCase: SegmentTextUseCase;
 
@@ -13,36 +17,27 @@ describe('SegmentTextUseCase (integration, live word API)', () => {
     useCase = new SegmentTextUseCase(new HttpWordLookupRepository());
   });
 
-  it('groups 正油 (not a real dictionary entry) and matches そば as its own token', async () => {
+  it('matches 正油 (an informal 醤油 spelling) as a real dictionary entry, and そば as its own token', async () => {
     const tokens = await useCase.execute('正油そば');
 
-    expect(tokens).toEqual([
-      { text: '正油', wordId: null },
-      expect.objectContaining({ text: 'そば', wordId: expect.any(String) }),
-    ]);
+    expect(tokens).toEqual([matched('正油'), matched('そば')]);
   }, 15000);
 
   it('reproduces the exact reported case, roman noise included', async () => {
     const tokens = await useCase.execute('正油そばTokyo123');
 
-    expect(tokens).toEqual([
-      { text: '正油', wordId: null },
-      expect.objectContaining({ text: 'そば', wordId: expect.any(String) }),
-    ]);
+    expect(tokens).toEqual([matched('正油'), matched('そば')]);
   }, 15000);
 
   it('matches 辞書 as a single real dictionary word', async () => {
     const tokens = await useCase.execute('辞書');
 
-    expect(tokens).toEqual([expect.objectContaining({ text: '辞書', wordId: expect.any(String) })]);
+    expect(tokens).toEqual([matched('辞書')]);
   }, 15000);
 
-  it('matches 寿司 and ラーメン back to back as two real words', async () => {
+  it('matches 寿司 and ラーメン back to back as two real words, not merged by script grouping', async () => {
     const tokens = await useCase.execute('寿司ラーメン');
 
-    expect(tokens).toEqual([
-      expect.objectContaining({ text: '寿司', wordId: expect.any(String) }),
-      expect.objectContaining({ text: 'ラーメン', wordId: expect.any(String) }),
-    ]);
+    expect(tokens).toEqual([matched('寿司'), matched('ラーメン')]);
   }, 15000);
 });

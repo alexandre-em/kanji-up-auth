@@ -13,6 +13,9 @@ export class ScanTokenDto {
 
   @Expose()
   wordId: string | null;
+
+  @Expose()
+  reading: string | null;
 }
 
 export class CreateScanResponseDto {

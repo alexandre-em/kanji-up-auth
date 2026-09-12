@@ -6,13 +6,21 @@ class FakeWordLookupRepository extends WordLookupRepository {
     super();
   }
 
-  async findExactMatch(text: string) {
-    return this.dictionary.has(text) ? { wordId: `id-${text}` } : null;
+  findExactMatch(text: string) {
+    return Promise.resolve(this.dictionary.has(text) ? { wordId: `id-${text}`, reading: `reading-${text}` } : null);
   }
 }
 
 function buildUseCase(words: string[]) {
   return new SegmentTextUseCase(new FakeWordLookupRepository(new Set(words)));
+}
+
+function matched(text: string) {
+  return { text, wordId: `id-${text}`, reading: `reading-${text}` };
+}
+
+function unmatched(text: string) {
+  return { text, wordId: null, reading: null };
 }
 
 describe('SegmentTextUseCase', () => {
@@ -21,10 +29,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('正油そば');
 
-    expect(tokens).toEqual([
-      { text: '正油', wordId: null },
-      { text: 'そば', wordId: 'id-そば' },
-    ]);
+    expect(tokens).toEqual([unmatched('正油'), matched('そば')]);
   });
 
   it('strips stray roman letters and digits before segmenting', async () => {
@@ -32,10 +37,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('正油そばTokyo123');
 
-    expect(tokens).toEqual([
-      { text: '正油', wordId: null },
-      { text: 'そば', wordId: 'id-そば' },
-    ]);
+    expect(tokens).toEqual([unmatched('正油'), matched('そば')]);
   });
 
   it('strips roman noise sitting between two unrelated words without merging them into one match', async () => {
@@ -43,10 +45,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('東京X大阪');
 
-    expect(tokens).toEqual([
-      { text: '東京', wordId: 'id-東京' },
-      { text: '大阪', wordId: 'id-大阪' },
-    ]);
+    expect(tokens).toEqual([matched('東京'), matched('大阪')]);
   });
 
   it('still prefers the longest dictionary match at each position (no regression)', async () => {
@@ -54,7 +53,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('東京都民');
 
-    expect(tokens).toEqual([{ text: '東京都', wordId: 'id-東京都' }, { text: '民', wordId: null }]);
+    expect(tokens).toEqual([matched('東京都'), unmatched('民')]);
   });
 
   it('segments back-to-back known words without merging them', async () => {
@@ -62,10 +61,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('寿司ラーメン');
 
-    expect(tokens).toEqual([
-      { text: '寿司', wordId: 'id-寿司' },
-      { text: 'ラーメン', wordId: 'id-ラーメン' },
-    ]);
+    expect(tokens).toEqual([matched('寿司'), matched('ラーメン')]);
   });
 
   it('groups a long unmatched kanji compound into a single token', async () => {
@@ -73,7 +69,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('未知漢字列');
 
-    expect(tokens).toEqual([{ text: '未知漢字列', wordId: null }]);
+    expect(tokens).toEqual([unmatched('未知漢字列')]);
   });
 
   it('splits an unmatched run at a script boundary between kanji and kana', async () => {
@@ -81,10 +77,17 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('未知ふめい');
 
-    expect(tokens).toEqual([
-      { text: '未知', wordId: null },
-      { text: 'ふめい', wordId: null },
-    ]);
+    expect(tokens).toEqual([unmatched('未知'), unmatched('ふめい')]);
+  });
+
+  it('splits an unmatched run at a script boundary between hiragana and katakana', async () => {
+    const useCase = buildUseCase([]);
+
+    // Two unrelated words sitting back to back (e.g. そば + ラーメン as scanned text) must not
+    // merge into one blob just because both happen to be kana
+    const tokens = await useCase.execute('ふめいカタカナ');
+
+    expect(tokens).toEqual([unmatched('ふめい'), unmatched('カタカナ')]);
   });
 
   it('stops an unmatched run right before a position that would itself match, instead of swallowing it', async () => {
@@ -92,10 +95,7 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('辭書');
 
-    expect(tokens).toEqual([
-      { text: '辭', wordId: null },
-      { text: '書', wordId: 'id-書' },
-    ]);
+    expect(tokens).toEqual([unmatched('辭'), matched('書')]);
   });
 
   it('keeps Japanese punctuation, grouped as its own unmatched token', async () => {
@@ -103,20 +103,27 @@ describe('SegmentTextUseCase', () => {
 
     const tokens = await useCase.execute('寿司、美味しい');
 
-    expect(tokens[0]).toEqual({ text: '寿司', wordId: 'id-寿司' });
+    expect(tokens[0]).toEqual(matched('寿司'));
     expect(tokens[1].wordId).toBeNull();
     expect(tokens[1].text.startsWith('、')).toBe(true);
   });
 
-  it('drops whitespace entirely, independent of script grouping', async () => {
+  it('drops whitespace within a line, independent of script grouping', async () => {
     const useCase = buildUseCase(['東京', '大阪']);
 
     const tokens = await useCase.execute('東京 大阪');
 
-    expect(tokens).toEqual([
-      { text: '東京', wordId: 'id-東京' },
-      { text: '大阪', wordId: 'id-大阪' },
-    ]);
+    expect(tokens).toEqual([matched('東京'), matched('大阪')]);
+  });
+
+  it('treats a line break as a hard boundary, never merging text across it', async () => {
+    const useCase = buildUseCase(['東京', '京都']);
+
+    // Stripping the newline would glue 東 (line 1) to 京 (start of line 2), falsely matching
+    // 東京 across two unrelated lines and burying the real 京都 match entirely
+    const tokens = await useCase.execute('東\n京都民');
+
+    expect(tokens).toEqual([unmatched('東'), matched('京都'), unmatched('民')]);
   });
 
   it('returns an empty list for text that is entirely non-Japanese', async () => {
@@ -143,9 +150,6 @@ describe('SegmentTextUseCase', () => {
 
     // The 7-character entry is unreachable (window caps at 6), so the 6-character prefix wins,
     // leaving the 7th character as its own unmatched token
-    expect(tokens).toEqual([
-      { text: '一二三四五六', wordId: `id-一二三四五六` },
-      { text: '七', wordId: null },
-    ]);
+    expect(tokens).toEqual([matched('一二三四五六'), unmatched('七')]);
   });
 });

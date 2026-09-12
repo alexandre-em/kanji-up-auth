@@ -10,12 +10,15 @@ const MAX_WORD_LENGTH = 6;
 // from a photo's background or a watermark, which have no business being segmented as tokens
 const JAPANESE_CHARACTER_PATTERN = /[^\u3000-\u303F\u3040-\u30FF\u4E00-\u9FFF]/g;
 
-type Script = 'kanji' | 'kana' | 'punctuation';
+// Hiragana and katakana kept separate — grouping an unmatched run across both would merge two
+// unrelated words sitting back to back (e.g. そば + ラーメン becoming one そばラーメン blob)
+type Script = 'kanji' | 'hiragana' | 'katakana' | 'punctuation';
 
 function scriptOf(character: string): Script {
   const codePoint = character.codePointAt(0) ?? 0;
   if (codePoint >= 0x4e00 && codePoint <= 0x9fff) return 'kanji';
-  if (codePoint >= 0x3040 && codePoint <= 0x30ff) return 'kana';
+  if (codePoint >= 0x3040 && codePoint <= 0x309f) return 'hiragana';
+  if (codePoint >= 0x30a0 && codePoint <= 0x30ff) return 'katakana';
   return 'punctuation';
 }
 
@@ -23,6 +26,8 @@ export type SegmentedToken = {
   text: string;
   // null when this stretch of text didn't match any known word (kana, punctuation, unrecognized)
   wordId: string | null;
+  // Furigana for a matched token — null when unmatched, since there's nothing to read it as
+  reading: string | null;
 };
 
 // Greedy longest-match-first segmentation against the existing word dictionary — not a real
@@ -33,7 +38,21 @@ export class SegmentTextUseCase {
   constructor(private wordLookupRepository: WordLookupRepository) {}
 
   async execute(text: string): Promise<SegmentedToken[]> {
-    const characters = Array.from(text.replace(/\s/g, '').replace(JAPANESE_CHARACTER_PATTERN, ''));
+    // A line break in OCR output separates unrelated text regions (different lines of a menu, a
+    // sign, ...) — treated as a hard boundary so a word is never built out of characters that
+    // never actually sat next to each other in the photo. Other whitespace (stray spaces OCR
+    // sometimes inserts mid-word) is still stripped within a line, as before.
+    const lines = text.split('\n').map((line) => Array.from(line.replace(/\s/g, '').replace(JAPANESE_CHARACTER_PATTERN, '')));
+
+    const tokens: SegmentedToken[] = [];
+    for (const characters of lines) {
+      tokens.push(...(await this.segmentLine(characters)));
+    }
+
+    return tokens;
+  }
+
+  private async segmentLine(characters: string[]): Promise<SegmentedToken[]> {
     const tokens: SegmentedToken[] = [];
     let index = 0;
 
@@ -60,7 +79,7 @@ export class SegmentTextUseCase {
         end += 1;
       }
 
-      tokens.push({ text: characters.slice(index, end).join(''), wordId: null });
+      tokens.push({ text: characters.slice(index, end).join(''), wordId: null, reading: null });
       index = end;
     }
 
@@ -70,12 +89,16 @@ export class SegmentTextUseCase {
   private async findLongestMatch(characters: string[], index: number): Promise<SegmentedToken | null> {
     const maxLength = Math.min(MAX_WORD_LENGTH, characters.length - index);
 
-    for (let length = maxLength; length >= 1; length--) {
-      const candidate = characters.slice(index, index + length).join('');
-      const match = await this.wordLookupRepository.findExactMatch(candidate);
-      if (match) return { text: candidate, wordId: match.wordId };
-    }
+    // All candidate lengths looked up at once instead of shortening one at a time — a text with
+    // N characters previously meant up to 6×N sequential round-trips to the word service, easily
+    // enough to stack into several seconds of pure network latency on a real scan
+    const candidates = Array.from({ length: maxLength }, (_, i) => characters.slice(index, index + maxLength - i).join(''));
+    const matches = await Promise.all(candidates.map((candidate) => this.wordLookupRepository.findExactMatch(candidate)));
 
-    return null;
+    const longestMatchIndex = matches.findIndex((match) => !!match);
+    if (longestMatchIndex === -1) return null;
+
+    const match = matches[longestMatchIndex]!;
+    return { text: candidates[longestMatchIndex], wordId: match.wordId, reading: match.reading };
   }
 }
