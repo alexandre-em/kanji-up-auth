@@ -53,8 +53,9 @@ export class FindUserResponseDto {
   kanjiProgression: {
     totalScore: number;
     dailyScores: Record<string, number>;
-    progression: Record<string, { correct: number; total: number } | number>;
+    progression: Record<string, { correct: number; total: number; lastSeenAtCount?: number } | number>;
     wordProgression: Record<string, { correct: number; total: number }>;
+    questionCount: number;
   };
 }
 
@@ -128,8 +129,11 @@ export class UpdateKanjiProgressionDto {
   dailyScores: Record<string, number>;
 
   @IsObject()
-  progression: Record<string, { correct: number; total: number } | number>;
+  progression: Record<string, { correct: number; total: number; lastSeenAtCount?: number } | number>;
 
   @IsObject()
   wordProgression: Record<string, { correct: number; total: number }>;
+
+  @IsNumber()
+  questionCount: number;
 }

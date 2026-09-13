@@ -11,8 +11,13 @@ export enum SubscriptionPlan {
 export type KanjiProgression = {
   totalScore: number;
   dailyScores: Record<string, number>;
-  progression: Record<string, { correct: number; total: number } | number>;
+  progression: Record<string, { correct: number; total: number; lastSeenAtCount?: number } | number>;
   wordProgression: Record<string, { correct: number; total: number }>;
+  // Total kanji questions ever answered, across every session — the shared clock a kanji's
+  // lastSeenAtCount is measured against, so a review can be spaced by "how many other questions
+  // happened since" rather than wall-clock time. Absent on accounts predating this field, treated
+  // as 0 client-side.
+  questionCount: number;
 };
 
 export type UnregisteredUsersFields = {

@@ -43,7 +43,7 @@ export class SignInWithGoogleUseCase {
       lastFreeCreditDate: null,
       unlockedDifficulties: [],
       unlockedKanji: [],
-      kanjiProgression: { totalScore: 0, dailyScores: {}, progression: {}, wordProgression: {} },
+      kanjiProgression: { totalScore: 0, dailyScores: {}, progression: {}, wordProgression: {}, questionCount: 0 },
     });
     const created = await this.userRepository.findByMacAddress(input.macAddress);
     const id = await this.userRepository.findIdByKey('userId', created.userId);
